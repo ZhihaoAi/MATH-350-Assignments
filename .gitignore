@@ -1,3 +1,10 @@
+# Custom
+# Mathematica
+*.nb
+
+# Problem sheet and my answer
+*.pdf
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
