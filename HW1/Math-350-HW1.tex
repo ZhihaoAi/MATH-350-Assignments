@@ -1,0 +1,360 @@
+\documentclass[10pt]{report}
+
+\usepackage{listings} % for code
+\lstset
+{
+	language=Matlab,
+	frame=single,
+	basicstyle=\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	showstringspaces=false,
+	tabsize=1,
+	breaklines=true,
+	breakatwhitespace=false,
+}
+
+\usepackage{siunitx} % for scientific notation
+% for `e' in scientific notation
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}}
+
+\usepackage{float} % for figure [H]
+\usepackage{booktabs} % for tabular
+\usepackage{caption} % for \caption*
+\usepackage[export]{adjustbox} % for valign=t
+\usepackage{array} % for column type m
+\usepackage{verbatim}
+\usepackage{graphicx}
+\graphicspath{ {imgs/} }
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+%%%%%% Pagination
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+
+%Title page
+\newcommand{\hwTitle}{Homework \#1}
+\newcommand{\hwCourse}{Introduction to Computational Mathematics}
+\newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
+
+\title{
+	\vspace{2in}
+	\textmd{\textbf{\hwCourse\\\hwTitle}}\\
+	\vspace{0.3in}\large{\textit{\hmwkClassInstructor}}
+	\vspace{3in}
+}
+
+%\title{Homework 1}
+\author{\textbf{Zhihao Ai}}
+\date{}
+
+%Header setting.
+\pagestyle{fancy}
+\fancyhead[L]{Zhihao Ai}
+\fancyhead[C]{Math 350: Introduction to Computational Mathematics}
+\fancyhead[R]{Homework 1}
+%%%%%%
+
+%\displaystyle apply to all
+\everymath{\displaystyle}
+
+%Custom commands.
+\newcommand{\ds}{\displaystyle}
+\newcommand{\eva}[2] {\left. #1 \right|_{#2}}
+\newcommand{\dintt}[4] {\int_{#1}^{#2} #3 d#4}
+
+\newcolumntype{C}{ >{\centering\arraybackslash} m{3em} }
+\newcolumntype{D}{ >{\centering\arraybackslash} m{4em} }
+
+\newcommand{\abs}[1] {\left| #1 \right|}
+
+\begin{document}
+
+\maketitle
+
+\section*{Part 1. Reading Assignment}
+\textbf{Read http://ta.twi.tudelft.nl/users/vuik/wi211/disasters.html. Write a short essay on your understanding of numerical errors, as a future scientist.}
+%\newline
+\\
+There were many disasters caused by a variety of reasons in the human history, but many of them were easy to be detected due to their obviousness, thus easy to be resolved. However, numerical errors are often emerging in a subtle way that is difficult for us to notice, and after many calculations, the loss of accuracy grows into huge problems which cost us not only money, but priceless human lives.
+
+Typically, numerical errors occur because of the way how computers represent numbers, especially floating point numbers. For example, the registers of the Patriot computer were only 24 bits long, then any conversion beyond the finite real numbers the computer can represent would cause a loss of precision, leading to inaccuracy of the following calculations, which finally caused an American Army barracks being struck and 28 soldiers being killed. Similar problem with accuracy of conversion happened with the Ariane 5 and the Sleipner, which caused the explosion of the rocket and the sinking of the offshore platform respectively.
+
+In the meantime, other common forms of numerical errors, like truncation error and rounding error, also had many negative impacts on the human activities. The conversion errors, reconversion errors and totalizing errors in the Euro’s case and the truncation errors in the Vancouver Stock Exchange’s case clearly demonstrate such financial influences. In addition, the rounding errors that changed a German Parliament makeup also showed an interesting political effect they could have.
+
+In conclusion, the numerical errors appear because of inaccuracy of computation, both by computers and human beings. Even though they are quite small to be detected, we as the future scientists, should be fully aware of them, and trying our best to solve them in order to benefit the world.
+
+\section*{Part 2. Fundamental concepts/ideas}
+\begin{enumerate}
+	\item 
+	Compute the absolute error and relative error in approximation of $x$ by $x^*$.
+	\begin{enumerate}
+		\item 
+		\(
+		x=\pi, x^*=3.1416
+		\)
+		\\
+		\(
+		e_{abs}
+		= \abs{x - x^*}
+		= \abs{\pi - 3.1416}
+		\approx 7.3464\times 10^{-6}
+		\\
+		e_{rel}
+		= \abs{\frac{x - x^*}{x}}
+		= \abs{\frac{\pi - 3.1416}{\pi}}
+		\approx 2.3384\times 10^{-6}
+		\)
+		
+		\item 
+		\(
+		x=\pi, x^*=22/7
+		\)
+		\\
+		\(
+		e_{abs}
+		= \abs{x - x^*}
+		= \abs{\pi - 22/7}
+		\approx 1.2645\times 10^{-3}
+		\\
+		e_{rel}
+		= \abs{\frac{x - x^*}{x}}
+		= \abs{\frac{\pi - 22/7}{\pi}}
+		\approx 4.025\times 10^{-4}
+		\)
+	\end{enumerate}
+	\textit{Things learned:} Absolute error measures the difference between an exact value and the approximation of it. Relative error measures the proportion of absolute error to the exact value. Both errors are nonnegative. Using $3.1416$ to approximate $\pi$ results in both absolute error and relative error of which the order of magnitude is $-6$. But using $22/7$ to approximate $\pi$ results in an absolute error of which the order of magnitude is $-3$ and a relative error of which the order of magnitude is $-4$. It's better to use $3.1416$ than $22/7$ as an approximation for $\pi$.
+	
+	\item
+	The Maclaurin series for the arctangent function converges for $-1 < x \le 1$ and is given by
+	\[
+	\arctan{x} 
+	= \lim\limits_{n\to \infty} P_n(x) 
+	= \lim\limits_{n\to \infty} \sum_{i=1}^{n} (-1)^{i+1} \frac{x^{2i-1}}{2i-1}
+	\]
+	\begin{enumerate}
+		\item 
+		Use the fact that $\tan{\pi / 4} = 1$ to determine the number of $n$ terms of the series that need to be summed to ensure that $\abs{4P_n(1)-\pi}<10^{-3}$.
+		\\
+		Since $P_n(x)$ consists of an alternating series whose term is decreasing in magnitude, 
+		\[
+		\abs{\lim\limits_{n\to \infty} P_n(x) - P_n(x)} \le \abs{a_{n+1}}
+		\]
+		where $a_n$ is the $n$-th term of the series. Also because $\tan{\frac{\pi}{4}} = 1$,
+		\[
+		\lim\limits_{n\to \infty} P_n(1) = \arctan{1} = \frac{\pi}{4}
+		\]
+		Therefore,
+		\[
+		\abs{4P_n(1) - \pi} 
+		\le 4\abs{a_{n+1}} 
+		= 4\abs{(-1)^{n+1} \frac{1^{2n+1}}{2n+1}} 
+		= \frac{4}{2n+1}
+		< 10^{-3}
+		\]
+		can be satisfied if $n > 1999.5$. So, at least 2000 terms of the series are needed to be summed to ensure that $\abs{4P_n(1) - \pi} < 10^{-3}$.
+		
+		\item 
+		Suppose Matlab require the value of $\pi$ to be within $10^{-10}$, how many terms of the series would we need to sum to obtain this degree of accuracy?
+		\\
+		\[
+		\abs{4P_n(1) - \pi} 
+		\le 4\abs{a_{n+1}} 
+		= 4\abs{(-1)^{n+1} \frac{1^{2n+1}}{2n+1}} 
+		= \frac{4}{2n+1}
+		< 10^{-10}
+		\]
+		Therefore, $n = 2\times 10^{10}$ is the minimum number of terms needed.
+		
+		\item 
+		This is not an efficient way to evaluate the value of $\pi$. The method can be improved significantly by observing that $ \pi /4 = \arctan 1/2 + \arctan 1/3$ and evaluating the series for the arctangent at $1/2$ and $1/3$. Determine the number of terms that must be summed to ensure an approximation to $\pi$ to within $10^{-3}$.
+		\\
+		Since $\pi/4 = \arctan 1/2 + \arctan 1/3$, denoting $a_n$ and $b_n$ as the $n$-th term of the series of $P_n\left(\frac{1}{2}\right)$ and $P_n\left(\frac{1}{3}\right)$ respectively and we have
+		\begin{equation*}
+		\begin{split}
+		\abs{4\left[P_n\left(\frac{1}{2}\right) + P_n\left(\frac{1}{3}\right)\right] - \pi} 
+		\le 4\abs{a_{n+1} + b_{n+1}} 
+		&= 4\abs{(-1)^{n+1} \frac{(\frac{1}{2})^{2n+1}}{2n+1} + (-1)^{n+1} \frac{(\frac{1}{3})^{2n+1}}{2n+1}} \\
+		&= 4\cdot \frac{(\frac{1}{2})^{2n+1} + (\frac{1}{3})^{2n+1}}{2n+1}
+		< 10^{-3}
+		\end{split}
+		\end{equation*}
+		Therefore, $n = 4$ terms must be summed.
+	\end{enumerate}
+	\textit{Things learned:} If $\abs{a_n}$ is approaching 0 monotonically, the difference between infinite sum and partial sum is bounded by a single term. The fact that $\tan{\pi/4}=1$ can be used combined with property of alternating series to approximate $\pi$. Even for error within $10^{-3}$, thousands of terms are needed to be calculated. To approximate $\pi$ using the first series requires a huge number of calculations. The Taylor series of $\arctan{1}$ converges much slower than the that of $\arctan{1/2}$ and $\arctan{1/3}$. By applying $\pi/4=\arctan{1/2}+\arctan{1/3}$, number of calculations can be dramatically decreased.
+
+	\item 
+	Consider integral $I_n = \dintt{0}{1}{\frac{x^n}{x+5}}{x}, n=0,1,2,\dots,20$.
+	\begin{enumerate}
+		\item 
+		Establish the recursive relation between $I_n$ and $I_{n-1}$ with $I_0 = \ln 6 - \ln 5$.
+		\\
+		\[
+		I_n+5I_{n-1}
+		= \dintt{0}{1}{\frac{x^n}{x+5}}{x} + 5\dintt{0}{1}{\frac{x^{n-1}}{x+5}}{x}
+		= \dintt{0}{1}{\frac{x^n+5x^{n-1}}{x+5}}{x}
+		= \dintt{0}{1}{x^{n-1}}{x}
+		= \frac{1}{n}
+		\]
+		Therefore,
+		\[
+		I_n = \begin{cases}
+		\ln{6} - \ln{5}, &n=0\\
+		\frac{1}{n} - 5I_{n-1}, &n=1,2,\dots,20
+		\end{cases}
+		\]
+		
+		\item 
+		Establish the recursive relation between $e_n$ and $e_{n-1}$. Suppose an error $e_0$ is introduced initially in the computation of $I_0$.
+		\\
+		Since $e_0$ is introduced initially in the computation of $I_0$,
+		\[
+		I_0^* = I_0 + e_0
+		\]
+		Then for the $n$-th term,
+		\[
+		e_n^* 
+		= I_n^* - I_n 
+		= \frac{1}{n} - 5I_{n-1}^* - \frac{1}{n} + 5I_{n-1}
+		= 5(I_{n-1} - I_{n-1}^*)
+		= -5e_{n-1}
+		\]
+		Therefore, 
+		\[
+		e_n = \begin{cases}
+		e_0, &n=0\\
+		-5e_{n-1}, &n=1,2,\dots,20
+		\end{cases}
+		\]
+		
+		\item 
+		How is $e_0$ amplified at the $n$-th step? Is this algorithm numerically stable?
+		\\
+		According to the recursive relation in part (b), $e_n = (-5)^n\cdot e_0$. If $n$ is large enough, the error $e_n$ would also be large; hence the algorithm is unstable.
+	\end{enumerate}
+	\textit{Things learned:} A little manipulation of $I_n$ can lead to $I_n+5I_{n-1}=1/n$. The error introduced, even small at first, grows exponentially in this case. A small error can make an algorithm numerically unstable. 
+\end{enumerate}
+
+\section*{Part 3. Computer assignments}
+\begin{enumerate}
+	\item 
+	Problem 1.39 @Page 49
+	\begin{enumerate}
+		\item 
+		What causes the while loop to terminate?
+		\\
+		When the result of \texttt{s+t} cannot be rounded to a number different from \texttt{s} that can be represented in Matlab, \texttt{s+t\~{}=s} returns false and terminates the loop. For example, for a positive \texttt{t}, if the rounded result of \texttt{s+t} is less than \texttt{s+eps(s)}, then \texttt{s+t} would actually yields \texttt{s}, not \texttt{s+t}; for a negative \texttt{t}, if the rounded result of \texttt{s+t} is less than the adjacent smaller number to \texttt{s}, \texttt{s+t} would also yields \texttt{s}.
+		
+		\item 
+		Answer the following questions for $x = \pi/2, 11\pi/2, 21\pi/2$, and $31\pi/2$.
+		\\
+		The code provided in the problem is revised as follows to output more information:
+		\lstinputlisting{powersin_aug.m}
+		
+		Then a function for different values of $x$:
+		\lstinputlisting{hw1p1.m}
+		
+		Running \lstinline|x=[pi/2, 11*pi/2, 21*pi/2, 31*pi/2]; hw1p1(x);|  produces the results below:
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{cccccc} \toprule
+				$x$ & $\sin x$&Computed Result & Number of Terms & Largest Term & Error\\ \midrule
+				$\pi/2$ & $1$ & $1.0000$ & $21$ & $1.5708$ & \num{2.2204e-16} \\
+				$11\pi/2$ & $-1$ & $-1.0000$ & $73$ & \num{3.0665e+06} & \num{2.1287e-10} \\
+				$21\pi/2$ & $1$ & $0.9999$ & $119$ & \num{1.4673e+13} & \num{1.3324e-04} \\
+				$31\pi/2$ & $-1$ & \num{-5.8220e+03} & $155$ & \num{7.9890e+19} & \num{5.8210e+03} \\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+	
+		\begin{enumerate}
+			\item 
+			How accurate is the computed result?
+			\\
+			The computed results are relatively accurate for $\pi/2$ and $11\pi/2$. But the error increases as $x$ increases and for $x = 31\pi/2$ the error is unacceptable.
+			
+			\item 
+			How many terms are required?
+			\\
+			If the zero terms are counted as well, the number of terms required is 21, 73, 119 and 155 for $x = \pi/2, 11\pi/2, 21\pi/2$, and $31\pi/2$ respectively.
+			
+			\item 
+			What is the largest term in the series?
+			\\
+			The largest term is 1.5708, \num{3.0665e6}, \num{1.4673e13} and \num{7.9890e19} for $x = \pi/2, 11\pi/2, 21\pi/2$, and $31\pi/2$ respectively.
+		\end{enumerate}
+	
+		\item 
+		What do you conclude about the use of floating-point arithmetic and power series to evaluate functions?
+		\\
+		It's probably a bad idea to do that if the power series converge slowly enough for the errors introduced due to floating-point arithmetic to grow into a notable inaccuracy.
+	\end{enumerate}
+	\textit{Things learned:} Numbers a computer can represent is finite. \texttt{eps(x)} can be used to get the distance of \texttt{x} to the closest number larger than \texttt{x}. When an operant is small enough, a calculation may turn out not as expected. The result of a calculation is rounded to the nearest representable number. Using power series to approximate $\sin$ is not quite preferable due to floating-point arithmetic. The power series of $\sin$ may consists of really large number which affects the precision.
+	
+	\item 
+	Consider a recurrence formula: $a_{k+2} = 10a_{k+1} - 9a_k$ with
+	\begin{enumerate}
+		\item [1.]
+		$a_2 = a_1 = 3.75$
+		\item [2.]
+		$a_2 = a_1 = 3.775$
+	\end{enumerate}
+	For us, the solution is always $a_k = a_1$ for any positive integer $k$. However, for a computer (a machine with finite precision), things may change due to round-off error.
+	\begin{enumerate}
+		\item 
+		Write a short Matlab script and calculate $a_k$ up to 20 iterations, i.e., k =1,2,\dots,19, for the two cases.
+		\lstinputlisting{recurrence.m}
+		
+		\item 
+		Demonstrate the catastrophic round-off error using a table showing the digit loss.
+		
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{ccc} \toprule
+				Index $i$ & $a_i$ with $a_1=3.75$ & $a_i$ with $a_1=3.775$ \\ \midrule
+				1  & 3.750000 & 3.775000 \\
+				2  & 3.750000 & 3.775000 \\
+				3  & 3.750000 & 3.775000 \\
+				4  & 3.750000 & 3.775000 \\
+				5  & 3.750000 & 3.775000 \\
+				6  & 3.750000 & 3.775000 \\
+				7  & 3.750000 & 3.775000 \\
+				8  & 3.750000 & 3.775000 \\
+				9  & 3.750000 & 3.775000 \\
+				10 & 3.750000 & 3.775000 \\
+				11 & 3.750000 & 3.775000 \\
+				12 & 3.750000 & 3.774999 \\
+				13 & 3.750000 & 3.774994 \\
+				14 & 3.750000 & 3.774944 \\
+				15 & 3.750000 & 3.774498 \\
+				16 & 3.750000 & 3.770485 \\
+				17 & 3.750000 & 3.734363 \\
+				18 & 3.750000 & 3.409264 \\
+				19 & 3.750000 & 0.483375 \\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+	
+		\item 
+		Explain why case 1 and 2 behave differently.
+		\\
+		Since $3.75_{10} = 11.11_{2}$, there is no round-off error introduced in the algorithm. But $3.775_{10} = 11.110\overline{0011}_{2}$ can only be stored by rounding to the nearest number Matlab can represent, thus introducing a round-off error. After certain times of calculations, the error accumulates and causes the issue above.
+	\end{enumerate}
+
+	\item 
+	Write a Matlab routine using Horner's algorithm to evaluate the value of polynomial
+	\[
+	p(x) = 6x^5 + 5x^4 +4x^3 + 3x^2 +2x+1 \quad \text{at} \quad x=5
+	\]
+	\lstinputlisting{horner.m}
+	outputs \lstinline|ans = 22461|.
+\end{enumerate}
+
+\end{document}
+
+
