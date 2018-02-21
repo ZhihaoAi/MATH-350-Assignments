@@ -1,0 +1,426 @@
+\documentclass[10pt]{report}
+
+\usepackage{verbatim}
+%\usepackage{subcaption} % for subfigures
+%\usepackage{amsthm} % for QED
+%\usepackage{algpseudocode} % for pseudo-code
+\usepackage{mathtools} % for \xRightarrow?
+
+\usepackage{listings} % for code
+\lstset
+{
+	language=Matlab,
+	frame=single,
+	basicstyle=\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	showstringspaces=false,
+	tabsize=4,
+	breaklines=true,
+	breakatwhitespace=false,
+}
+
+\usepackage{siunitx} % for scientific notation
+% for `e' in scientific notation
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}}
+
+\usepackage{float} % for figure [H]
+\usepackage{booktabs} % for tabular
+\usepackage{caption} % for \caption*
+\usepackage[export]{adjustbox} % for valign=t
+\usepackage{array} % for column type m
+\usepackage{verbatim}
+\usepackage{graphicx}
+\graphicspath{ {imgs/} }
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+%%%%%% Pagination
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+
+%Title page
+\newcommand{\hwTitle}{Homework \#2}
+\newcommand{\hwCourse}{Introduction to Computational Mathematics}
+\newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
+
+\title{
+	\vspace{2in}
+	\textmd{\textbf{\hwCourse\\\hwTitle}}\\
+	\vspace{0.3in}\large{\textit{\hmwkClassInstructor}}
+	\vspace{3in}
+}
+
+%\title{Homework 1}
+\author{\textbf{Zhihao Ai}}
+\date{}
+
+%Header setting.
+\pagestyle{fancy}
+\fancyhead[L]{Zhihao Ai}
+\fancyhead[C]{Math 350}
+\fancyhead[R]{Homework 2}
+%%%%%%
+
+%\displaystyle apply to all
+\everymath{\displaystyle}
+
+%Custom commands.
+\newcommand{\ds}{\displaystyle}
+\newcommand{\eva}[2] {\left. #1 \right|_{#2}}
+\newcommand{\dintt}[4] {\int_{#1}^{#2} #3 d#4}
+
+\newcolumntype{C}{ >{\centering\arraybackslash} m{3em} }
+\newcolumntype{D}{ >{\centering\arraybackslash} m{4em} }
+
+\newcommand{\abs}[1] {\left| #1 \right|}
+\newcommand{\norm}[2][\infty] {\left\Vert \mathbf{#2} \right\Vert_#1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Part 1. Reading Assignment}
+
+\section*{Part 2. Fundamental concepts/ideas}
+\begin{enumerate}
+	\item 
+	Consider the linear system
+	\begin{align*}
+	3x_1 + 4x_2 + 3x_3 &= 16 \\
+	x_1 + 5x_2 - x_3 &= -12 \\
+	6x_1 + 3x_2 + 7x_3 &= 102
+	\end{align*}
+	\begin{enumerate}
+		\item 
+		Find matrix $L$ and $U$ using four significant digits.
+		\begin{align*}
+		\begin{pmatrix}
+		1 & 0 & 0\\
+		-0.3333 & 1 & 0\\
+		-2.000 & 0 & 1
+		\end{pmatrix}
+		\begin{pmatrix}
+		3 & 4 & 3\\
+		1 & 5 & -1\\
+		6 & 3 & 7
+		\end{pmatrix}
+		&=
+		\begin{pmatrix}
+		3 & 4 & 3\\
+		0 & 3.667 & -2.000\\
+		0 & -5.000 & 1.000
+		\end{pmatrix}
+		\tag{$L_1 A= A_1$}
+		\\
+		\begin{pmatrix}
+		1 & 0 & 0\\
+		0 & 1 & 0\\
+		0 & 1.364  & 1
+		\end{pmatrix}
+		\begin{pmatrix}
+		3 & 4 & 3\\
+		0 & 3.667 & -2.000\\
+		0 & -5.000 & 1.000
+		\end{pmatrix}
+		&=
+		\begin{pmatrix}
+		3 & 4 & 3\\
+		0 & 3.667 & -2.000\\
+		0 & 0 & -1.728
+		\end{pmatrix}
+		\tag{$L_2 A_1= U$}
+		\end{align*}
+		Because $L = L_1^{-1} L_2^{-1}$, from the multipliers in $L_1$ and $L_2$ we obtain
+		\[
+		L = \begin{pmatrix}
+		1 & 0 & 0\\
+		0.3333 & 1 & 0\\
+		2.000 & -1.364  & 1
+		\end{pmatrix}
+		,\ 
+		U = \begin{pmatrix}
+		3 & 4 & 3\\
+		0 & 3.667 & -2.000\\
+		0 & 0 & -1.728
+		\end{pmatrix}
+		\]
+		
+		\item 
+		Solve the linear system using $L$ and $U$ found in part (a).
+		
+		Since $L\mathbf{y} = \mathbf{b}$, by forward substitution,
+		\[
+			\begin{pmatrix}
+			1 & 0 & 0\\
+			0.3333 & 1 & 0\\
+			2.000 & -1.364  & 1
+			\end{pmatrix}
+			\mathbf{y}
+			=
+			\begin{pmatrix}
+			16\\
+			-12\\
+			102
+			\end{pmatrix}
+			\Rightarrow
+			\mathbf{y}
+			=
+			\begin{pmatrix}
+			16\\
+			-17.3328\\
+			46.3581
+			\end{pmatrix}
+		\]
+		Also $U\mathbf{x} = \mathbf{y}$, by back substitution,
+		\[
+		\begin{pmatrix}
+		3 & 4 & 3\\
+		0 & 3.667 & -2.000\\
+		0 & 0 & -1.728
+		\end{pmatrix}
+		\mathbf{x}
+		=
+		\begin{pmatrix}
+		16\\
+		-17.3328\\
+		46.3581
+		\end{pmatrix}
+		\Rightarrow
+		\mathbf{x}
+		\approx
+		\begin{pmatrix}
+		57.9724\\
+		-19.3586\\
+		-26.8276
+		\end{pmatrix}
+		\]
+	\end{enumerate}
+	\textit{Things learned}: $LU$ decomposition make it fast when we want to solve systems with the same $A$ but for different $\mathbf{b}$'s. $L$ can be found using Gaussian multipliers. With four significant digits, the difference between terms of $LU$ and those of $A$ is generally within $10^{-3}$. The exact solution $\mathbf{x} \approx (58, -19.3684, -26.8421)^{\rm T}$ is pretty close to what we calculated, which differs within $10^{-1}$.
+
+	\item 
+	Solve the following linear system and compare your solution with the exact solution $(2, 1)$.
+	\begin{align*}
+		x_1 + 2x_2 &= 4\\
+		2x_1 + 3.999x_2 &= 7.999
+	\end{align*}
+	\begin{enumerate}
+		\item 
+		Suppose the right hand side $b = (4, 7.999)$ is slightly perturbed to be $b_1=(4.001, 7.998)$, solve the system using the new right hand side $b_1$.
+		\[
+		\left(
+		\begin{array}{@{}cc|c@{}}
+		1& 2& 4.001\\
+		2& 3.999& 7.998
+		\end{array}
+		\right)
+		\xRightarrow{\text{R.R.}}
+		\left(
+		\begin{array}{@{}cc|c@{}}
+		1& 2& 4.001\\
+		0& -0.001& -0.004
+		\end{array}
+		\right)
+		\]
+		yields $x_2 = 4$. Using back substition, $x_1 = (4.001-4*2)/1 = -3.999$. Error $\mathbf{e} = \mathbf{x} - \mathbf{x^*} = (5.999, -3)^{\rm T}$.
+		
+		\item 
+		Solve the new system where the left hand side is slightly perturbed to
+		\begin{align*}
+		1.001x_1 + 2.001x_2 &= 4\\
+		2.001x_1 + 3.998x_2 &= 7.999
+		\end{align*}
+		\[
+		\left(
+		\begin{array}{@{}cc|c@{}}
+		1.001& 2.001& 4\\
+		2.001& 3.998& 7.999
+		\end{array}
+		\right)
+		\xRightarrow{\text{R.R.}}
+		\left(
+		\begin{array}{@{}cc|c@{}}
+		1.001& 2.001& 4\\
+		0& -0.002& 0.003
+		\end{array}
+		\right)
+		\]
+		yields $x_2 = 0.003/(-0.002) = -1.5$. Using back substition, $x_1 = (4-(-1.5)*2.001)/1.001 = 6.995$. Error $\mathbf{e} = \mathbf{x} - \mathbf{x^*} = (-4.995, 2.5)^{\rm T}$.
+	\end{enumerate}
+	\textit{Things learned:} The matrix is near singular because the second equation is almost twice the first one. Since $cond(A)$ is large, the matrix is ill-conditioned. For such matrix, small change in $A$ or $\mathbf{b}$ will result in huge change in $\mathbf{x}$.
+	
+	\item 
+	Using the maximum norm,
+	\begin{enumerate}
+		\item 
+		compute the ratio between the relative change in solution and relative change in right hand side, for problem 2(a).
+		\[
+		\frac{\norm{\delta x}}{\norm{x}} = 5.999, 
+		\frac{\norm{\delta b}}{\norm{b}} = 0.001\to
+		\left.\frac{\norm{\delta x}}{\norm{x}}\right/\frac{\norm{\delta b}}{\norm{b}} = \frac{5.999}{0.001} = 5999
+		\]
+		
+		\item 
+		compute the ratio between the relative change in solution and relative change in the coefficient matrix, for problem 2(b).
+		\[
+		\frac{\norm{\delta x}}{\norm{x}} = 4.995, 
+		\frac{\norm{\delta A}}{\norm{A}} = 0.002\to
+		\left.\frac{\norm{\delta x}}{\norm{x}}\right/\frac{\norm{\delta A}}{\norm{A}}= \frac{4.995}{0.002} = 2497.5
+		\]
+		
+		\item 
+		compute the condition number of the original coefficient matrix used in problem 2. Is this linear system well-conditioned?
+		\[
+		\norm{A}\norm{A^\mathrm{-1}} 
+			= \norm{\begin{pmatrix}
+			1 & 2\\ 2 & 3.999
+			\end{pmatrix}} 
+			\norm{\begin{pmatrix}
+				-3999 & 2000\\ 2000 & -1000
+				\end{pmatrix}} 
+			= 5.999 * 5999 \approx 35980
+		\]
+		This system is ill-conditioned.
+	\end{enumerate}
+	\textit{Things learned:} When a matrix is near singular, the condition number of it becomes huge. For a matrix with a big condition number, small change in $\mathbf{A}$ or $\mathbf{b}$ would result in huge change in $\mathbf{x}$. Condition number of a matrix, $\text{cond}(\bf A) = \left\Vert \mathbf{A}\right\Vert \left\Vert \mathbf{A}^{\rm -1}\right\Vert$.
+	
+	\item 
+	Compute the spectral radius, $\rho(A)$ of matrix $A = \begin{pmatrix}
+	1 & 1 & 0\\
+	1 & 2 & 1\\
+	-1 & 1 & 2
+	\end{pmatrix}$ and its $L_1$, $L_2$ and $L_\infty$ norm.
+	\begin{align*}
+	\text{det}(A-\lambda I) = 
+	\begin{vmatrix}
+	1-\lambda & 1 & 0\\
+	1 & 2-\lambda & 1\\
+	-1 & 1 & 2-\lambda
+	\end{vmatrix} &= 0 \to \lambda_1 = 3, \lambda_2 = 2, \lambda_3 = 0 \\
+	\rho(A) &= \max_i{\abs{\lambda_i}} = 3\\
+	\norm[1]{A} &= \max_{j}{\norm[1]{A(:,\mathit{j})}} = 4\\
+	\norm{A} &= \max_{i}{\norm[1]{A(\mathit{i},:)}} = 4\\
+	\text{det}(A^TA-\lambda I) = 
+	\begin{vmatrix}
+	2-\lambda & 3 & 0\\
+	3 & 6-\lambda & 3\\
+	0 & 3 & 6-\lambda
+	\end{vmatrix} &= 0
+	\to
+	\lambda_1 = 7+\sqrt{7}, \lambda_2 = 7-\sqrt{7}, \lambda_3 = 0 \\
+	\norm[2]{A} &= \sqrt{\rho(A^TA)} = \sqrt{7+\sqrt{7}} \approx 3.106
+	\end{align*}
+	\textit{Things learned:} Spectral radius of a matrix equals the maximum eigenvalue of it. $L_1$ norm of a matrix is the max column sum. $L_\infty$ norm of a matrix is the max row sum. $L_\infty$ norm of a matrix equals $\sqrt{\rho(A^TA)}$.
+\end{enumerate}
+
+\section*{Part 3. Computer assignments}
+\begin{enumerate}
+	\item
+	Problem 2.3 @Page 32\\
+	Solve a system of equations to find the vector $f$ of member forces.
+	\lstinputlisting{hw2p1.m}
+	The script above outputs $f = [-20\sqrt{2}, 20, 10, -30, 10\sqrt{2}, 20, 0, -30, 5\sqrt{2}, 25, 20, -25\sqrt{2}, 25]^{\rm T}$.
+	
+	\item 
+	Problem 2.5 @Page 35
+	\begin{enumerate}
+		\item 
+		Which of the following families of matrices are positive definite?
+		\begin{verbatim}
+			M = magic(n)
+			H = hilb(n)
+			P = pascal(n)
+			I = eye(n,n)
+			R = randn(n,n)
+			R = randn(n,n); A = R’ * R
+			R = randn(n,n); A = R’ + R
+			R = randn(n,n); I = eye(n,n); A = R’ + R + n*I
+		\end{verbatim}
+		Excluding $n = 1$ and applying \verb|[~, p] = chol(·)| to each family of matrices and check if $p = 0$, which means the matrix is positive definite, we can get the following conclusions:\\
+		\verb|M = magic(n)| is not positive definite.\\
+		\verb|H = hilb(n)|, \verb|P = pascal(n)|, \verb|I = eye(n,n)| and \verb|A = R’ * R| are positive definite.\\
+		For \verb|R = randn(n,n)| and \verb|A = R’ + R|, they are generally not positive definite but sometimes they can be positive definite depending on what the randomly generated matrix is like.\\
+		For \verb|A = R’ + R + n*I|, it is generally positive definite but sometimes they can be not positive definite depending on what the randomly generated matrix is like.
+		
+		\item 
+		If the matrix $R$ is upper triangular, then equating individual elements in
+		the equation $A = R^T R$ gives
+		\[
+		a_{kj} = \sum_{i=1}^{k} r_{ik}r_{ij},\ k\le j
+		\]
+		Using these equations in different orders yields different variants of the Cholesky
+		algorithm for computing the elements of $R$. What is one such algorithm?
+		\lstinputlisting{hw2p2b.m}
+		This algorithm above yields one column at a time. For example, \verb|hw2p2b(pascal(4))| would outputs:
+		\[
+		\begin{pmatrix}
+		1 & 1 & 1 & 1\\
+		1 & 2 & 3 & 4\\
+		1 & 3 & 6 & 10\\
+		1 & 4 & 10 & 20
+		\end{pmatrix}
+		\xRightarrow{\text{hw2p2\_2(pascal(4))}}
+		\begin{pmatrix}
+		1 & 1 & 1 & 1\\
+		0 & 1 & 2 & 3\\
+		0 & 0 & 1 & 3\\
+		0 & 0 & 0 & 1
+		\end{pmatrix}
+		\]
+	\end{enumerate}
+
+	\item 
+	Problem 2.7 @ Page 37\\
+	Modify the \verb|lutx| function so that it returns four outputs. Write a function \verb|mydet(A)| that uses your modified \verb|lutx| to compute the
+	determinant of $A$. 
+	\lstinputlisting{mydet.m}
+	The change in \verb|lutx| is made at line 26, which updates the sign when a permutation happens.
+
+	\item 
+	Problem 2.19 @ Page 40\\
+	For $n = 100$, solve this tridiagonal system of equations three different ways:
+	\begin{align*}
+	2x_1 - x_2 &= 1,\\
+	-x_{j-1} + 2x_j - x_{j+1} &= j,\ j = 2, \dots, n-1,\\
+	-x_{n-1} + 2x_n &= n.
+	\end{align*}
+	\begin{enumerate}
+		\item 
+		Use \verb|diag| three times to form the coefficient matrix and then use \verb|lutx| and \verb|bslashtx| to solve the system.
+		\lstinputlisting[firstline=1,lastline=4]{hw2p4a.m}
+		produces the result
+		\begin{multline*}
+			\mathbf{x} = \num{1.0e+04} * [0.1700,0.3399,0.5096,0.6790,0.8480,1.0165,1.1844,1.3516,1.5180,1.6835,1.8480,\\
+			2.0114,2.1736,2.3345,2.4940,2.6520,2.8084,2.9631,3.1160,3.2670,3.4160,3.5629,3.7076,3.8500,\\
+			3.9900,4.1275,4.2624,4.3946,4.5240,4.6505,4.7740,4.8944,5.0116,5.1255,5.2360,5.3430,5.4464,\\
+			5.5461,5.6420,5.7340,5.8220,5.9059,5.9856,6.0610,6.1320,6.1985,6.2604,6.3176,6.3700,6.4175,\\
+			6.4600,6.4974,6.5296,6.5565,6.5780,6.5940,6.6044,6.6091,6.6080,6.6010,6.5880,6.5689,6.5436,\\
+			6.5120,6.4740,6.4295,6.3784,6.3206,6.2560,6.1845,6.1060,6.0204,5.9276,5.8275,5.7200,5.6050,\\
+			5.4824,5.3521,5.2140,5.0680,4.9140,4.7519,4.5816,4.4030,4.2160,4.0205,3.8164,3.6036,3.3820,\\
+			3.1515,2.9120,2.6634,2.4056,2.1385,1.8620,1.5760,1.2804,0.9751,0.6600,0.3350]^{\rm T}
+		\end{multline*}
+		
+		\item 
+		Use \verb|spdiags| once to form a sparse representation of the coefficient matrix and then use the backslash operator to solve the system.
+		\lstinputlisting{hw2p4b.m}
+		produces the same result above.
+		
+		\item 
+		Use \verb|tridisolve| to solve the system.
+		\lstinputlisting{hw2p4c.m}
+		produces the same result above.
+		
+		\item 
+		Use \verb|condest| to estimate the condition of the coefficient matrix.\lstinputlisting{hw2p4d.m}
+		outputs condition number = 5100 using $L_1$ norm.
+	\end{enumerate}
+	
+\end{enumerate}
+
+\end{document}
+
+
