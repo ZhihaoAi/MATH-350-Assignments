@@ -1,0 +1,162 @@
+\documentclass[10pt]{report}
+
+\usepackage{verbatim}
+%\usepackage{subcaption} % for subfigures
+%\usepackage{amsthm} % for QED
+%\usepackage{algpseudocode} % for pseudo-code
+\usepackage{mathtools} % for \xRightarrow?
+
+\usepackage{listings} % for code
+\lstset
+{
+	language=Matlab,
+	frame=single,
+	basicstyle=\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	showstringspaces=false,
+	tabsize=4,
+	breaklines=true,
+	breakatwhitespace=false,
+}
+
+\usepackage{siunitx} % for scientific notation
+% for `e' in scientific notation
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}}
+
+\usepackage{float} % for figure [H]
+\usepackage{booktabs} % for tabular
+\usepackage{caption} % for \caption*
+\usepackage[export]{adjustbox} % for valign=t
+\usepackage{array} % for column type m
+\usepackage{verbatim}
+\usepackage{graphicx}
+\graphicspath{ {imgs/} }
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+%%%%%% Pagination
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+
+%Title page
+\newcommand{\hwTitle}{Homework \#2}
+\newcommand{\hwCourse}{Introduction to Computational Mathematics}
+\newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
+
+\title{
+	\vspace{2in}
+	\textmd{\textbf{\hwCourse\\\hwTitle}}\\
+	\vspace{0.3in}\large{\textit{\hmwkClassInstructor}}
+	\vspace{3in}
+}
+
+%\title{Homework 1}
+\author{\textbf{Zhihao Ai}}
+\date{}
+
+%Header setting.
+\pagestyle{fancy}
+\fancyhead[L]{Zhihao Ai}
+\fancyhead[C]{Math 350}
+\fancyhead[R]{Homework 2}
+%%%%%%
+
+%\displaystyle apply to all
+\everymath{\displaystyle}
+
+%Custom commands.
+\newcommand{\ds}{\displaystyle}
+\newcommand{\eva}[2] {\left. #1 \right|_{#2}}
+\newcommand{\dintt}[4] {\int_{#1}^{#2} #3 d#4}
+
+\newcolumntype{C}{ >{\centering\arraybackslash} m{3em} }
+\newcolumntype{D}{ >{\centering\arraybackslash} m{4em} }
+\newcolumntype{N}{ >$ c <$}
+
+\newcommand{\abs}[1] {\left| #1 \right|}
+\newcommand{\norm}[2][\infty] {\left\Vert \mathbf{#2} \right\Vert_#1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Part 1. Reading Assignment}
+
+\section*{Part 2. Fundamental Concepts/Ideas}
+\begin{enumerate}
+	\item 
+	The exact solution to the following linear system is $\mathbf{x} = (1, -2, 3)$
+	\begin{align*}
+		10x_1 - 2x_2 - x_3 &= 11\\
+		-2x_1 + 10x_2 - x_3 &= -25\\
+		-x_1 - 2x_2 + 5x_3 &= 18
+	\end{align*}
+	\begin{enumerate}
+		\item 
+		Solve the system using Gauss-Jacobi iterative method with $\mathbf{x}^{(0)} = (0, 0, 0)$, stop the iteration if tolerance, $tol = \norm{x^{(\mathit k + \mathrm 1)} - x^{(\mathit{k})}} \le 0.5\times 10^{-2}$
+		
+		\item 
+		Solve the system using Gauss-Seidel iterative method with $\mathbf{x}^{(0)} = (0, 0, 0)$, stop the iteration if tolerance, $tol = \norm{x^{(\mathit k + \mathrm 1)} - x^{(\mathit{k})}} \le 0.5\times 10^{-2}$
+		
+		\item 
+		Interchange equation \#2 and \#3, do (a) and (b).
+		
+		\item 
+		What can you learn from this problem?
+	\end{enumerate}
+
+	\item 
+	Given $\sin(0.32)=0.314567, \sin(0.34)=0.333487, \sin(0.36)=0.352274$. Compute $\sin(0.3367)$ by Lagrange interpolation polynomial.
+	\begin{enumerate}
+		\item 
+		A linear interpolation using the first two points.
+		
+		\item 
+		A quadratic interpolation using all three points.
+		
+		\item 
+		Estimate the absolute error in part (a) and (b).
+	\end{enumerate}
+\end{enumerate}
+
+\section*{Part 3. Computer Assignments}
+\begin{enumerate}
+	\item 
+	Problem 3.3(a)(b) @ Page 19
+	\begin{enumerate}
+		\item
+		Interpolate these data by each of the four interpolants discussed in this
+		chapter: \verb|piecelin|, \verb|polyinterp|, \verb|splinetx|, and \verb|pchiptx|. Plot the results for $-1 \le x \le 1$.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{*{7}{N}} \toprule
+				x & -1.00 & -0.96 & -0.65 & 0.10 & 0.40 & 1.00\\ \midrule
+				y & -1.0000 & -0.1512 & 0.3860 & 0.4802 & 0.8838 & 1.0000\\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+		
+		\item 
+		What are the values of each of the four interpolants at $x = -0.3$? Which
+		of these values do you prefer? Why?
+	\end{enumerate}
+	
+	\item 
+	Problem 3.4 @ Page 20
+	\begin{enumerate}
+		\item 
+		Interpolate both functions of $x$ and $y$ on a finer grid and plot the result. Do the same thing with \verb|pchiptx|. Which do you prefer?
+		
+		\item 
+		Can you tell if Figure 3.11 was done with \verb|splinetx| or \verb|pchiptx|?
+	\end{enumerate}
+\end{enumerate}
+
+\end{document}
+
+
