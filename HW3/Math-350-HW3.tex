@@ -243,45 +243,45 @@
 		What can you learn from this problem?
 		
 		In part (a), the coefficient matrix is diagonally dominant and $\norm[2]{M} < 1$:
-		\begin{align*}
-		M^\mathrm{T}M &= \begin{pmatrix}
+		\[
+		M^\mathrm{T}M = \begin{pmatrix}
 		0.08 & 0.08 & 0.02\\
 		0.08 & 0.2 & 0.02\\
 		0.02 & 0.02 & 0.02
 		\end{pmatrix}, 
-		\rho(M^\mathrm{T}M) = \max_i{\abs{\lambda_i}} \approx 0.2432\\
-		\to \norm[2]{M} &= \sqrt{\rho(M^\mathrm{T}M)} \approx 0.4932 < 1
-		\end{align*}
+		\rho(M^\mathrm{T}M) \approx 0.2432
+		\to \norm[2]{M} = \sqrt{\rho(M^\mathrm{T}M)} \approx 0.4932 < 1
+		\]
 		When equation \#2 and \#3 are interchanged, the matrix is not diagonally dominant and $\norm[2]{M} > 1$:
-		\begin{align*}
-		M^\mathrm{T}M &= \begin{pmatrix}
+		\[
+		M^\mathrm{T}M = \begin{pmatrix}
 		4.25 & -20 & -1.25\\
 		-20 & 100.04 & 0.02\\
 		-1.25 & 0.02 & 6.26
 		\end{pmatrix}, 
-		\rho(M^\mathrm{T}M) = \max_i{\abs{\lambda_i}} \approx 104.05\\
-		\to \norm[2]{M} &= \sqrt{\rho(M^\mathrm{T}M)} \approx 10.2 > 1
-		\end{align*}
+		\rho(M^\mathrm{T}M) \approx 104.05
+		\to \norm[2]{M} = \sqrt{\rho(M^\mathrm{T}M)} \approx 10.2 > 1
+		\]
 		In part (b), the coefficient matrix is diagonally dominant and $\norm[2]{M} < 1$:
-		\begin{align*}
-		M^\mathrm{T}M &\approx \begin{pmatrix}
+		\[
+		M^\mathrm{T}M \approx \begin{pmatrix}
 		0 & 0 & 0\\
 		0 & 0.0448 & 0.0286\\
 		0 & 0.0286 & 0.0290
 		\end{pmatrix}, 
-		\rho(M^\mathrm{T}M) = \max_i{\abs{\lambda_i}} \approx 0.0665\\
-		\to \norm[2]{M} &= \sqrt{\rho(M^\mathrm{T}M)} \approx 0.2580 < 1
-		\end{align*}
+		\rho(M^\mathrm{T}M) \approx 0.0665
+		\to \norm[2]{M} = \sqrt{\rho(M^\mathrm{T}M)} \approx 0.2580 < 1
+		\]
 		When equation \#2 and \#3 are interchanged, the matrix is not diagonally dominant and $\norm[2]{M} > 1$:
-		\begin{align*}
-		M^\mathrm{T}M &\approx \begin{pmatrix}
+		\[
+		M^\mathrm{T}M \approx \begin{pmatrix}
 		0 & 0 & 0\\
 		0 & 2.01 & -34.245\\
 		0 & -34.245 & 596.5
 		\end{pmatrix}, 
-		\rho(M^\mathrm{T}M) = \max_i{\abs{\lambda_i}} \approx 598.47\\
-		\to \norm[2]{M} &= \sqrt{\rho(M^\mathrm{T}M)} \approx 24.46 > 1
-		\end{align*}
+		\rho(M^\mathrm{T}M) \approx 598.47
+		\to \norm[2]{M} = \sqrt{\rho(M^\mathrm{T}M)} \approx 24.46 > 1
+		\]
 		We can see that if $A$ is diagonally dominant and $\norm[2]{M} < 1$, the iterative formula converges and $\lim\limits_{k\to \infty} \left\Vert \mathbf{x}^{(k)} - \mathbf{x} \right\Vert$ = 0, where $\mathbf{x}$ is the exact solution to $A\mathbf{x} = \mathbf{b}$; if not, $\mathbf{x}^{(k)}$ would not converge to the exact solution as shown in part (c). In addition, by comparing $\mathbf{x}^{(k)}$ produced by both methods, we conclude that $\mathbf{x}^{(k)}$ by Gauss--Seidel method converges faster than that by Gauss--Jacobi method.
 		
 	\end{enumerate}
@@ -291,13 +291,33 @@
 	\begin{enumerate}
 		\item 
 		A linear interpolation using the first two points.
+		\begin{align*}
+			l_0(x) &= \frac{x-0.34}{0.32-0.34},
+			l_1(x) = \frac{x-0.32}{0.34-0.32}\\
+			p_1(x) &= l_0(x)\cdot 0.314567 + l_1(x)\cdot 0.333487\\
+			&\approx 0.946x + 0.011847\\
+			p_1(0.3367) &\approx 0.330365
+		\end{align*}
 		
 		\item 
 		A quadratic interpolation using all three points.
+		\begin{align*}
+		l_0(x) &= \frac{(x-0.34)(x-0.36)}{(0.32-0.34)(0.32-0.36)},\\
+		l_1(x) &= \frac{(x-0.32)(x-0.36)}{(0.34-0.32)(0.34-0.36)},\\
+		l_2(x) &= \frac{(x-0.32)(x-0.34)}{(0.36-0.32)(0.36-0.34)}\\
+		p_2(x) &= l_0(x)\cdot 0.314567 + l_1(x)\cdot 0.333487 + l_2(x)\cdot 0.352274\\
+		&\approx -0.16625x^2 + 1.05573x - 0.006241\\
+		p_2(0.3367) &\approx 0.330374
+		\end{align*}
 		
 		\item 
 		Estimate the absolute error in part (a) and (b).
+		\begin{align*}
+			\epsilon_a &= \abs{\sin{(0.3367)} - p_1(0.3367)} \approx 8.992\times 10^{-6}\\
+			\epsilon_b &= \abs{\sin{(0.3367)} - p_2(0.3367)} \approx 1.705\times 10^{-7}
+		\end{align*}
 	\end{enumerate}
+	\textit{Things learned}: Lagrange interpolation polynomial is able to give fairly good approximation of $f(x)$ on a certain interval. Even though higher order polynomial would lead to Runge's phenomenon near the edges, it produces generally better approximations around the center than polynomials with lower degrees, especially for $x$ that is close to $x_i$.
 \end{enumerate}
 
 \section*{Part 3. Computer Assignments}
