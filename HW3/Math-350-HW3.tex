@@ -1,10 +1,10 @@
 \documentclass[10pt]{report}
 
 \usepackage{verbatim}
-%\usepackage{subcaption} % for subfigures
+\usepackage{subcaption} % for subfigures
 %\usepackage{amsthm} % for QED
 %\usepackage{algpseudocode} % for pseudo-code
-\usepackage{mathtools} % for \xRightarrow?
+\usepackage{mathtools} % for \xRightarrow
 
 \usepackage{listings} % for code
 \lstset
@@ -336,20 +336,69 @@
 				\bottomrule
 			\end{tabular}
 		\end{table}
-		
+		\lstinputlisting{hw3pa1.m}
+		The script above produces:
+		\begin{figure}[ht]
+			\vspace{-2ex}
+			\begin{subfigure}[b]{0.5\linewidth}
+				\centering
+				\includegraphics[width=\linewidth]{piecelin.png}
+				\vspace{-5ex} 
+				\caption*{\texttt{piecelin}}
+			\end{subfigure}
+			\begin{subfigure}[b]{0.5\linewidth}
+				\centering
+				\includegraphics[width=\linewidth]{polyinterp.png} 
+				\vspace{-5ex}
+				\caption*{\texttt{polyinterp}}
+			\end{subfigure}
+			\begin{subfigure}[b]{0.5\linewidth}
+				\centering
+				\includegraphics[width=\linewidth]{splinetx.png} 
+				\vspace{-5ex}
+				\caption*{\texttt{splinetx}}
+			\end{subfigure}
+			\begin{subfigure}[b]{0.5\linewidth}
+				\centering
+				\includegraphics[width=\linewidth]{pchiptx.png} 
+				\vspace{-5ex}
+				\caption*{\texttt{pchiptx}}
+			\end{subfigure} 
+		\end{figure}
+	
 		\item 
 		What are the values of each of the four interpolants at $x = -0.3$? Which
 		of these values do you prefer? Why?
+		
+		\verb|piecelin|: $0.4300$; \verb|polyinterp|: $-0.9990$; \verb|splinetx|: $-0.1957$; \verb|pchiptx|: $0.4322$. I prefer $0.4322$ the most because for $-0.65<-0.3<0.10$, $y(-0.65)<0.4322<y(0.10)$. It preserves the  monotonicity and is much smoother than \verb|piecelin|.
 	\end{enumerate}
 	
 	\item 
 	Problem 3.4 @ Page 20
 	\begin{enumerate}
 		\item 
-		Interpolate both functions of $x$ and $y$ on a finer grid and plot the result. Do the same thing with \verb|pchiptx|. Which do you prefer?
+		Interpolate both functions of $x$ and $y$ on a finer grid and plot the result with \verb|splinetx|. Do the same thing with \verb|pchiptx|. Which do you prefer?
+		\begin{figure}[H]
+			\vspace{-2ex}
+			\begin{subfigure}[b]{0.5\linewidth}
+				\centering
+				\includegraphics[width=\linewidth]{hand_splinetx.png}
+				\vspace{-5ex} 
+				\caption*{\texttt{splinetx}}
+			\end{subfigure}
+			\begin{subfigure}[b]{0.5\linewidth}
+				\centering
+				\includegraphics[width=\linewidth]{hand_pchiptx.png} 
+				\vspace{-5ex}
+				\caption*{\texttt{pchiptx}}
+			\end{subfigure}
+		\end{figure}
+		I would prefer the one using \verb|splinetx| because it's much smoother than the other one.
 		
 		\item 
 		Can you tell if Figure 3.11 was done with \verb|splinetx| or \verb|pchiptx|?
+		
+		It was done with \verb|splinetx|.
 	\end{enumerate}
 \end{enumerate}
 
