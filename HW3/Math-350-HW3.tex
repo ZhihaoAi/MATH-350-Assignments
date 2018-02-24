@@ -44,7 +44,7 @@
 \setlength{\textwidth}{6.5in}
 
 %Title page
-\newcommand{\hwTitle}{Homework \#2}
+\newcommand{\hwTitle}{Homework \#3}
 \newcommand{\hwCourse}{Introduction to Computational Mathematics}
 \newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
 
@@ -63,7 +63,7 @@
 \pagestyle{fancy}
 \fancyhead[L]{Zhihao Ai}
 \fancyhead[C]{Math 350}
-\fancyhead[R]{Homework 2}
+\fancyhead[R]{Homework 3}
 %%%%%%
 
 %\displaystyle apply to all
@@ -90,7 +90,7 @@
 \section*{Part 2. Fundamental Concepts/Ideas}
 \begin{enumerate}
 	\item 
-	The exact solution to the following linear system is $\mathbf{x} = (1, -2, 3)$
+	The exact solution to the following linear system is $\mathbf{x} = (1, -2, 3)^\mathrm{T}$.
 	\begin{align*}
 		10x_1 - 2x_2 - x_3 &= 11\\
 		-2x_1 + 10x_2 - x_3 &= -25\\
@@ -98,10 +98,63 @@
 	\end{align*}
 	\begin{enumerate}
 		\item 
-		Solve the system using Gauss-Jacobi iterative method with $\mathbf{x}^{(0)} = (0, 0, 0)$, stop the iteration if tolerance, $tol = \norm{x^{(\mathit k + \mathrm 1)} - x^{(\mathit{k})}} \le 0.5\times 10^{-2}$
+		Solve the system using Gauss--Jacobi iterative method with $\mathbf{x}^{(0)} = (0, 0, 0)^\mathrm{T}$, stop the iteration if tolerance, $tol = \norm{x^{(\mathit k + \mathrm 1)} - x^{(\mathit{k})}} \le 0.5\times 10^{-2}$
+		
+		According to the coefficient matrix,
+		\begin{align*}
+			M &= -D^{-1}(A-D) = -\begin{pmatrix}
+			1/10 & 0 & 0\\
+			0 & 1/10 & 0\\
+			0 & 0 & 1/5
+			\end{pmatrix}
+			\begin{pmatrix}
+			0 & -2 & -1\\
+			-2 & 0 & -1\\
+			-1 & -2 & 0
+			\end{pmatrix}
+			=
+			\begin{pmatrix}
+			0 & 1/5 & 1/10\\
+			1/5 & 0 & 1/10\\
+			1/5 & 2/5 & 0
+			\end{pmatrix}
+			\\
+			\mathbf{g} &= D^{-1}\mathbf{b} = \begin{pmatrix}
+			1/10 & 0 & 0\\
+			0 & 1/10 & 0\\
+			0 & 0 & 1/5
+			\end{pmatrix}
+			\begin{pmatrix}
+			11\\
+			-25\\
+			18
+			\end{pmatrix}
+			=
+			\begin{pmatrix}
+			11/10\\
+			-5/2\\
+			18/5
+			\end{pmatrix}
+		\end{align*}
+		Apply $\mathbf{x}^{(k)} = M\mathbf{x}^{(k-1)} + \mathbf{g}$ iteratively with $\mathbf{x}^{(0)} = (0, 0, 0)^\mathrm{T}$ using Matlab:
+		\lstinputlisting{hw3p1a.m}
+		The code above produces:
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{NNN} \toprule
+				k & x^{(k)} & tol \\ \midrule
+				1 & (1.1000,-2.5000,3.6000)^\mathrm{T} & 3.6000\\
+				2 & (0.9600,-1.9200,2.8200)^\mathrm{T} & 0.7800\\
+				3 & (0.9980,-2.0260,3.0240)^\mathrm{T} & 0.2040\\
+				4 & (0.9972,-1.9980,2.9892)^\mathrm{T} & 0.0348\\
+				5 & (0.9993,-2.0016,3.0002)^\mathrm{T} & 0.0110\\
+				6 & (0.9997,-2.0001,2.9992)^\mathrm{T} & 0.0015\\
+				\bottomrule
+			\end{tabular}
+		\end{table}
 		
 		\item 
-		Solve the system using Gauss-Seidel iterative method with $\mathbf{x}^{(0)} = (0, 0, 0)$, stop the iteration if tolerance, $tol = \norm{x^{(\mathit k + \mathrm 1)} - x^{(\mathit{k})}} \le 0.5\times 10^{-2}$
+		Solve the system using Gauss--Seidel iterative method with $\mathbf{x}^{(0)} = (0, 0, 0)^\mathrm{T}$, stop the iteration if tolerance, $tol = \norm{x^{(\mathit k + \mathrm 1)} - x^{(\mathit{k})}} \le 0.5\times 10^{-2}$
 		
 		\item 
 		Interchange equation \#2 and \#3, do (a) and (b).
