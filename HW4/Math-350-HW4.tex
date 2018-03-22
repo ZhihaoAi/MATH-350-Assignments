@@ -1,0 +1,139 @@
+\documentclass[10pt]{report}
+
+\usepackage{verbatim}
+\usepackage{subcaption} % for subfigures
+%\usepackage{amsthm} % for QED
+%\usepackage{algpseudocode} % for pseudo-code
+\usepackage{mathtools} % for \xRightarrow
+
+\usepackage{listings} % for code
+\lstset
+{
+	language=Matlab,
+	frame=single,
+	basicstyle=\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	showstringspaces=false,
+	tabsize=4,
+	breaklines=true,
+	breakatwhitespace=false,
+}
+
+\usepackage{siunitx} % for scientific notation
+% for `e' in scientific notation
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}}
+
+\usepackage{float} % for figure [H]
+\usepackage{booktabs} % for tabular
+\usepackage{caption} % for \caption*
+\usepackage[export]{adjustbox} % for valign=t
+\usepackage{array} % for column type m
+\usepackage{verbatim}
+\usepackage{graphicx}
+\graphicspath{ {imgs/} }
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+%%%%%% Pagination
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+
+%Title page
+\newcommand{\hwTitle}{Homework \#3}
+\newcommand{\hwCourse}{Introduction to Computational Mathematics}
+\newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
+
+\title{
+	\vspace{2in}
+	\textmd{\textbf{\hwCourse\\\hwTitle}}\\
+	\vspace{0.3in}\large{\textit{\hmwkClassInstructor}}
+	\vspace{3in}
+}
+
+%\title{Homework 1}
+\author{\textbf{Zhihao Ai}}
+\date{}
+
+%Header setting.
+\pagestyle{fancy}
+\fancyhead[L]{Zhihao Ai}
+\fancyhead[C]{Math 350}
+\fancyhead[R]{Homework 3}
+%%%%%%
+
+%\displaystyle apply to all
+\everymath{\displaystyle}
+
+%Custom commands.
+\newcommand{\ds}{\displaystyle}
+\newcommand{\eva}[2] {\left. #1 \right|_{#2}}
+\newcommand{\dintt}[4] {\int_{#1}^{#2} #3 d#4}
+
+\newcolumntype{C}{ >{\centering\arraybackslash} m{3em} }
+\newcolumntype{D}{ >{\centering\arraybackslash} m{4em} }
+\newcolumntype{N}{ >$ c <$}
+
+\newcommand{\abs}[1] {\left| #1 \right|}
+\newcommand{\norm}[2][\infty] {\left\Vert \mathbf{#2} \right\Vert_#1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Part 1. Reading Assignment}
+%Read section 4.7,4.8, 4.9, and 4.10
+
+\section*{Part 2. Fundamental Concepts/Ideas}
+\begin{enumerate}
+	\item 
+	Consider nonlinear equation $\ln x + x - 1.5 = 0, x\in [1,2]$.
+	\begin{enumerate}
+		\item 
+		Show that there exists a root in the interval using Intermediate Value Theorem.
+		
+		\item 
+		Find the root using bi-section method, just do 6 iterations.
+	\end{enumerate}
+
+	\item 
+	Solve nonlinear equation $x^6 - x - 1 = 0, x\in [1,2]$. The root is $x=1.134724138$. You may start with $x=1.5$.
+	\begin{enumerate}
+		\item 
+		using bi-section method with tolerance $\abs{x^{(k+1)} - x^{(k)}} \le 10^{-3}$
+
+		\item 
+		using Newton's method with tolerance $\abs{x^{(k+1)} - x^{(k)}} \le 10^{-9}$
+	\end{enumerate}
+\end{enumerate}
+
+\section*{Part 3. Computer Assignments}
+(Problem 4.15 @ Page )
+Kepler's model of planetary orbits includes a quantity $E$, the eccentricity anomaly, that satisfies the equation
+\[
+M = E - e\sin E
+\]
+where $M$ is the mean anomaly and $e$ is the eccentricity of the orbit. For this exercise, take $M = 24.851090$ and $e = 0.1$.
+\begin{enumerate}
+	\item 
+	Use \texttt{fzerotx} to solve for $E$. You can assign the appropriate values to \texttt{M} and \texttt{e} and then use them in the definition of a function of \texttt{E}.\\
+	M = 24.851090\\
+	e = 0.1\\
+	F = @(E) E - e*sin(E) - M\\
+	Use F for the first argument to fzerotx.
+	
+	\item 
+	An "exact" formula for $E$ is known:
+	\[
+	E = M + 2\sum_{m=1}^{\infty} \frac{1}{m}J_m(me)\sin(mM),
+	\]
+	where $J_m(x)$ is the Bessel function of the first kind of order $m$. Use this formula, and \texttt{besselj(m,x)} in Matlab, to compute $E$. How many terms are needed? How does this value of $E$ compare to the value obtained with \texttt{fzerotx}?
+\end{enumerate}
+
+\end{document}
+
+
