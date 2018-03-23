@@ -1,0 +1,157 @@
+\documentclass[10pt]{report}
+
+\usepackage{verbatim}
+\usepackage{subcaption} % for subfigures
+%\usepackage{amsthm} % for QED
+%\usepackage{algpseudocode} % for pseudo-code
+\usepackage{mathtools} % for \xRightarrow
+
+\usepackage{listings} % for code
+\lstset
+{
+	language=Matlab,
+	frame=single,
+	basicstyle=\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	showstringspaces=false,
+	tabsize=4,
+	breaklines=true,
+	breakatwhitespace=false,
+}
+
+\usepackage{siunitx} % for scientific notation
+% for `e' in scientific notation
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}}
+
+\usepackage{float} % for figure [H]
+\usepackage{booktabs} % for tabular
+\usepackage{caption} % for \caption*
+\usepackage[export]{adjustbox} % for valign=t
+\usepackage{array} % for column type m
+\usepackage{verbatim}
+\usepackage{graphicx}
+\graphicspath{ {imgs/} }
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+%%%%%% Pagination
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+
+%Title page
+\newcommand{\hwTitle}{Homework \#5}
+\newcommand{\hwCourse}{Introduction to Computational Mathematics}
+\newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
+
+\title{
+	\vspace{2in}
+	\textmd{\textbf{\hwCourse\\\hwTitle}}\\
+	\vspace{0.3in}\large{\textit{\hmwkClassInstructor}}
+	\vspace{3in}
+}
+
+%\title{Homework 1}
+\author{\textbf{Zhihao Ai}}
+\date{}
+
+%Header setting.
+\pagestyle{fancy}
+\fancyhead[L]{Zhihao Ai}
+\fancyhead[C]{Math 350}
+\fancyhead[R]{Homework 5}
+%%%%%%
+
+%Custom commands.
+\newcommand{\ds}{\displaystyle}
+\newcommand{\eva}[2] {\left. #1 \right|_{#2}}
+\newcommand{\dintt}[4] {\int_{#1}^{#2} #3 d#4}
+
+\newcolumntype{C}{ >{\centering\arraybackslash} m{3em} }
+\newcolumntype{D}{ >{\centering\arraybackslash} m{4em} }
+\newcolumntype{N}{ >$ c <$}
+
+\newcommand{\abs}[1] {\left| #1 \right|}
+\newcommand{\norm}[2][\infty] {\left\Vert \mathbf{#2} \right\Vert_#1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Part 1. Reading Assignment}
+%Read chapter 5.
+
+\section*{Part 2. Fundamental Concepts/Ideas}
+\begin{enumerate}
+	\item 
+	Given data
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{*{6}{N}} \toprule
+			i & 1 & 2 & 3 & 4 & 5 \\ \midrule
+			x_i & 1.0 & 1.4 & 1.8 & 2.2 & 2.6\\
+			y_i & 0.931 & 0.473 & 0.297 & 0.224 & 0.618\\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	We can fit these data using a curve $y=p(x)=\frac{1}{a+bx}$ in the least square sense.
+	\begin{enumerate}
+		\item 
+		Find coefficients $a$ and $b$. Hint: you can let $Y(x)=1/p(x)=a+bx$.
+		
+		\item 
+		Compute the residual $E = \sum_{i=1}^{5} [p(x_i) - y_i]^2$.
+		
+		\item 
+		Use Matlab to plot the curve $y=p(x)$ and $(x_i, y_i)$ on the same plot.
+	\end{enumerate}
+
+	\item 
+	Given data
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{*{8}{N}} \toprule
+			i & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \midrule
+			x_i & 0.2 & 0.3 & 0.4 & 0.5 & 0.6 & 0.7 & 0.8\\
+			y_i & 3.16 & 2.38 & 1.75 & 1.34 & 1.00 & 0.74 & 0.56\\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	We can fit these data using a curve $y=q(x)=\beta e^{-\alpha x}$ in the least square sense.
+	\begin{enumerate}
+		\item 
+		Find coefficients $\alpha$ and $\beta$. Hint: you can let $Y(x)=\ln y=\ln \beta - \alpha x$.
+		
+		\item 
+		Compute the residual $E = \sum_{i=1}^{7} [q(x_i) - y_i]^2$.
+		
+		\item 
+		Use Matlab to plot the curve $y=q(x)$ and $(x_i, y_i)$ on the same plot.
+	\end{enumerate}
+\end{enumerate}
+
+\section*{Part 3. Computer assignments}
+(Problem 5.8 @ Page 22) Given 25 observations, $y_k$, taken at equally spaced values of $t$.
+\begin{enumerate}
+	\item 
+	Fit the data with a straight line, $y(t) = \beta_1 + \beta_2t$, and plot the residuals, $y(t_k)−y_k$. You should observe that one of the data points has a much larger residual than the others. This is probably an \textit{outlier}.
+	
+	\item 
+	Discard the outlier, and fit the data again by a straight line. Plot the residuals again. Do you see any pattern in the residuals?
+	
+	\item 
+	Fit the data, with the outlier excluded, by a model of the form
+	\[
+	y(t) = \beta_1 + \beta_2 t + \beta_3 \sin t
+	\]
+	
+	\item 
+	Evaluate the third fit on a finer grid over the interval $[0,26]$. Plot the fitted curve, using line style '-', together with the data, using line style 'o'. Include the outlier, using a different marker, '*'.
+\end{enumerate}
+\end{document}
+
+
