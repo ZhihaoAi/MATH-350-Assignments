@@ -44,7 +44,7 @@
 \setlength{\textwidth}{6.5in}
 
 %Title page
-\newcommand{\hwTitle}{Homework \#3}
+\newcommand{\hwTitle}{Homework \#4}
 \newcommand{\hwCourse}{Introduction to Computational Mathematics}
 \newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
 
@@ -55,7 +55,6 @@
 	\vspace{3in}
 }
 
-%\title{Homework 1}
 \author{\textbf{Zhihao Ai}}
 \date{}
 
@@ -63,11 +62,8 @@
 \pagestyle{fancy}
 \fancyhead[L]{Zhihao Ai}
 \fancyhead[C]{Math 350}
-\fancyhead[R]{Homework 3}
+\fancyhead[R]{Homework 4}
 %%%%%%
-
-%\displaystyle apply to all
-\everymath{\displaystyle}
 
 %Custom commands.
 \newcommand{\ds}{\displaystyle}
@@ -96,8 +92,24 @@
 		\item 
 		Show that there exists a root in the interval using Intermediate Value Theorem.
 		
+		Since $f(x) = \ln x + x - 1.5$ is continuous and $f(1) < 0 < f(2)$, by intermediate value theorem, there exists a $c\in (1,2)$ where $f(c) = 0$.
+		
 		\item 
 		Find the root using bi-section method, just do 6 iterations.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{*{7}{N}} \toprule
+				k & a & f(a) & b & f(b) & x^{(k)} & f(x) \\ \midrule
+				1 & 1.000000 & -0.500000 & 2.000000 & 1.193147 & 1.500000 & 0.405465\\
+				2 & 1.000000 & -0.500000 & 1.500000 & 0.405465 & 1.250000 & -0.026856\\
+				3 & 1.250000 & -0.026856 & 1.500000 & 0.405465 & 1.375000 & 0.193454\\
+				4 & 1.250000 & -0.026856 & 1.375000 & 0.193454 & 1.312500 & 0.084434\\
+				5 & 1.250000 & -0.026856 & 1.312500 & 0.084434 & 1.281250 & 0.029086\\
+				6 & 1.250000 & -0.026856 & 1.281250 & 0.029086 & 1.265625 & 0.001191\\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+		After 6 iterations, the approximated root is $x\approx 1.265625$.
 	\end{enumerate}
 
 	\item 
@@ -105,9 +117,46 @@
 	\begin{enumerate}
 		\item 
 		using bi-section method with tolerance $\abs{x^{(k+1)} - x^{(k)}} \le 10^{-3}$
+		
+		\lstinputlisting{hw4p2a.m}
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{*{8}{N}} \toprule
+				k & a & f(a) & b & f(b) & x^{(k)} & f(x) & tol\\ \midrule
+				1 & 1.000000 & -1.000000 & 2.000000 & 61.000000 & 1.500000 & 8.890625 & 0.500000\\
+				2 & 1.000000 & -1.000000 & 1.500000 & 8.890625 & 1.250000 & 1.564697 & 0.250000\\
+				3 & 1.000000 & -1.000000 & 1.250000 & 1.564697 & 1.125000 & -0.097713 & 0.125000\\
+				4 & 1.125000 & -0.097713 & 1.250000 & 1.564697 & 1.187500 & 0.616653 & 0.062500\\
+				5 & 1.125000 & -0.097713 & 1.187500 & 0.616653 & 1.156250 & 0.233269 & 0.031250\\
+				6 & 1.125000 & -0.097713 & 1.156250 & 0.233269 & 1.140625 & 0.061578 & 0.015625\\
+				7 & 1.125000 & -0.097713 & 1.140625 & 0.061578 & 1.132812 & -0.019576 & 0.007812\\
+				8 & 1.132812 & -0.019576 & 1.140625 & 0.061578 & 1.136719 & 0.020619 & 0.003906\\
+				9 & 1.132812 & -0.019576 & 1.136719 & 0.020619 & 1.134766 & 0.000427 & 0.001953\\
+				10 & 1.132812 & -0.019576 & 1.134766 & 0.000427 & 1.133789 & -0.009598 & 0.000977\\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+		After 10 iterations, $tol = \abs{x^{(k+1)} - x^{(k)}} \le 10^{-3}$ and the approximated root is $x\approx 1.133789$.
 
 		\item 
 		using Newton's method with tolerance $\abs{x^{(k+1)} - x^{(k)}} \le 10^{-9}$
+		
+		\lstinputlisting{hw4p2b.m}
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{*{4}{N}} \toprule
+				k & x^{(k)} & f(x) & tol\\ \midrule
+				1 & 1.3004908836 & 2.5372641434 & 0.1995091164\\
+				2 & 1.1814804164 & 0.5384585843 & 0.1190104672\\
+				3 & 1.1394555903 & 0.0492352510 & 0.0420248261\\
+				4 & 1.1347776252 & 0.0005503239 & 0.0046779650\\
+				5 & 1.1347241453 & 0.0000000711 & 0.0000534799\\
+				6 & 1.1347241384 & 0.0000000000 & 0.0000000069\\
+				7 & 1.1347241384 & -0.0000000000 & 0.0000000000\\
+				\bottomrule
+			\end{tabular}
+		\end{table}
+		After 7 iterations, $tol = \abs{x^{(k+1)} - x^{(k)}} \le 10^{-9}$ and the approximated root is $x\approx 1.1347241384$.
 	\end{enumerate}
 \end{enumerate}
 
@@ -119,19 +168,22 @@ M = E - e\sin E
 \]
 where $M$ is the mean anomaly and $e$ is the eccentricity of the orbit. For this exercise, take $M = 24.851090$ and $e = 0.1$.
 \begin{enumerate}
-	\item 
-	Use \texttt{fzerotx} to solve for $E$. You can assign the appropriate values to \texttt{M} and \texttt{e} and then use them in the definition of a function of \texttt{E}.\\
-	M = 24.851090\\
-	e = 0.1\\
-	F = @(E) E - e*sin(E) - M\\
-	Use F for the first argument to fzerotx.
+	\item [(a)]
+	Use \texttt{fzerotx} to solve for $E$. You can assign the appropriate values to \texttt{M} and \texttt{e} and then use them in the definition of a function of \texttt{E}.
 	
-	\item 
-	An "exact" formula for $E$ is known:
+	Let $F(E) = E - e\sin E - M$, by intermediate value theorem, since $F(0) < 0 < F(50)$, there exists a root in $(0,50)$.
+	\lstinputlisting{hw4ca1a.m}
+	The script above produces $E\approx 24.8203571825429065711432485841214656829833984375000000$.
+	
+	\item [(b)]
+	An ``exact" formula for $E$ is known:
 	\[
 	E = M + 2\sum_{m=1}^{\infty} \frac{1}{m}J_m(me)\sin(mM),
 	\]
 	where $J_m(x)$ is the Bessel function of the first kind of order $m$. Use this formula, and \texttt{besselj(m,x)} in Matlab, to compute $E$. How many terms are needed? How does this value of $E$ compare to the value obtained with \texttt{fzerotx}?
+	
+	\lstinputlisting{hw4ca1b.m}
+	The script above produces $E\approx 24.8203571825429030184295697836205363273620605468750000$ using 14 terms. This value is less accurate than the one obtained with \texttt{fzerotx}.
 \end{enumerate}
 
 \end{document}
