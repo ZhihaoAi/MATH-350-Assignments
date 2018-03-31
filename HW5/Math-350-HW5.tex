@@ -103,11 +103,34 @@
 		\item 
 		Find coefficients $a$ and $b$. Hint: you can let $Y(x)=1/p(x)=a+bx$.
 		
+		Let $Y(x) = 1/p(x) = a + bx$, then $Y_i = 1/y_i$. To minimize $I(a, b) = \sum_i [(a+bx) - Y_i]^2$, let both $\partial{I}/\partial{a} = \partial{I}/\partial{b} = 0$ and we have
+		\[
+		\begin{cases}
+		2\sum_i [(a + b x_i) - Y_i] \cdot 1 = 0\\
+		2\sum_i [(a + b x_i) - Y_i] \cdot x_i = 0
+		\end{cases}
+		\Rightarrow
+		\begin{cases}
+		\sum_i a + (\sum_i x_i)b = \sum_i Y_i\\
+		(\sum_i x_i)a + (\sum_i x_i^2)b = \sum_i x_i Y_i\\
+		\end{cases}
+		\]
+		Below is the script that solves the equations:
+		\lstinputlisting{hw5p1.m}
+		The coefficients outputed is $a\approx 0.980376, b\approx 0.859535$.
+		
 		\item 
 		Compute the residual $E = \sum_{i=1}^{5} [p(x_i) - y_i]^2$.
 		
+		The script above produces $E\approx 0.269785$.
+		
 		\item 
 		Use Matlab to plot the curve $y=p(x)$ and $(x_i, y_i)$ on the same plot.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.5\linewidth]{hw5p1}
+		\end{figure}
 	\end{enumerate}
 
 	\item 

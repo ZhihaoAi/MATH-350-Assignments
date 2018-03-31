@@ -1,0 +1,10 @@
+syms a b; f = @(x) x^2; g = @(x,y) x*y;
+xi = [1, 1.4, 1.8, 2.2, 2.6]; yi = [0.931, 0.473, 0.297, 0.224, 0.618];
+Yi = arrayfun(@(x) 1/x, yi);
+eqs = [5*a + sum(xi)*b == sum(Yi), sum(xi)*a + sum(arrayfun(f, xi))*b == sum(arrayfun(g, xi, Yi))];
+sol = solve(eqs, [a, b]);
+fprintf('a = %f, b = %f\n', sol.a, sol.b);
+p = @(x) 1/(sol.a + sol.b * x);
+e = sum(arrayfun(@(x,y) (p(x)-y)^2, xi, yi));
+fprintf('E = %f\n', e);
+scatter(xi, yi); hold on; plot(linspace(0,5), arrayfun(p, linspace(0,5)));
