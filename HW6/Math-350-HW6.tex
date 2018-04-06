@@ -1,0 +1,132 @@
+\documentclass[10pt]{report}
+
+\usepackage{verbatim}
+\usepackage{subcaption} % for subfigures
+%\usepackage{amsthm} % for QED
+%\usepackage{algpseudocode} % for pseudo-code
+\usepackage{mathtools} % for \xRightarrow
+
+\usepackage{listings} % for code
+\lstset
+{
+	language=Matlab,
+	frame=single,
+	basicstyle=\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	showstringspaces=false,
+	tabsize=4,
+	breaklines=true,
+	breakatwhitespace=false,
+}
+
+\usepackage{siunitx} % for scientific notation
+% for `e' in scientific notation
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}}
+
+\usepackage{float} % for figure [H]
+\usepackage{booktabs} % for tabular
+\usepackage{caption} % for \caption*
+\usepackage[export]{adjustbox} % for valign=t
+\usepackage{array} % for column type m
+\usepackage{verbatim}
+\usepackage{graphicx}
+\graphicspath{ {imgs/} }
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+%%%%%% Pagination
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+
+%Title page
+\newcommand{\hwTitle}{Homework \#6}
+\newcommand{\hwCourse}{Introduction to Computational Mathematics}
+\newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
+
+\title{
+	\vspace{2in}
+	\textmd{\textbf{\hwCourse\\\hwTitle}}\\
+	\vspace{0.3in}\large{\textit{\hmwkClassInstructor}}
+	\vspace{3in}
+}
+
+%\title{Homework 1}
+\author{\textbf{Zhihao Ai}}
+\date{}
+
+%Header setting.
+\pagestyle{fancy}
+\fancyhead[L]{Zhihao Ai}
+\fancyhead[C]{Math 350}
+\fancyhead[R]{Homework 6}
+%%%%%%
+
+%Custom commands.
+\newcommand{\ds}{\displaystyle}
+\newcommand{\eva}[2] {\left. #1 \right|_{#2}}
+\newcommand{\dintt}[4] {\int_{#1}^{#2} #3 d#4}
+
+\newcolumntype{C}{ >{\centering\arraybackslash} m{3em} }
+\newcolumntype{D}{ >{\centering\arraybackslash} m{4em} }
+\newcolumntype{N}{ >$ c <$}
+
+\newcommand{\abs}[1] {\left| #1 \right|}
+\newcommand{\norm}[2][\infty] {\left\Vert \mathbf{#2} \right\Vert_#1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Part 1. Reading Assignment}
+%Read chapter 6.
+
+\section*{Part 2. Fundamental Concepts/Ideas}
+\begin{enumerate}
+	\item 
+	Consider finding an approximation to integral: $I = \dintt{0}{\pi/2}{\cos(x/2)}{x}$ using composite trapezoidal rule, $I = \dintt{a}{b}{f(x)}{x} = \frac{h}{2}[f(a) + 2\sum_{k=1}^{n-1}f(a+kh) + f(b) ] + error$, where $error = -\frac{b-a}{12}h^2 f''(\eta)$ for some $\eta\in [a,b]$. Suppose we wish to obtain an approximation with the absolute value of the error term less than $0.0001$, determine the number of subintervals $n$ correspondingly. (\textit{\textbf{hint}}: $\cos(\eta) \le 1$)
+	
+	\item 
+	Redo problem 1 using composite Simpson’s rule $I = \dintt{a}{b}{f(x)}{x} = \frac{h}{3}[f(a) + 4\sum_{k=1, \text{odd}}^{n/2-1}f(a+kh) $
+	$ + 2\sum_{k=2, \text{even}}^{n/2}f(a+kh) + f(b) ] + error$ where $error = -\frac{b-a}{180}h^4f^{(4)}(\eta)$, for some $\eta\in [a,b]$. What can you learn from problem 1 and 2?
+	
+	\item 
+	Review your lecture notes and derive the 2-point Gaussian-Legendre formula, $\dintt{-1}{1}{f(x)}{x} \approx w_1 f(x_1) + w_2 f(x_2)$, i.e. you need to determine the weights $w_1$ and $w_2$ and the nodes $x_1$ and $x_2$ so that the above rule is exact for the functions $f(x)=1, f(x)=x, f(x)=x^2,$ and $f(x)=x^3$. Evaluate integral $i = \dintt{1}{4}{\frac{1}{x+2018}}{x}$ using the formula you derived. What is the exact value? (\textit{\textbf{hint}}: you have to map the\\[0.5 ex]
+	interval $[1, 4]$ to $[-1,1]$ following your lecture notes.)
+	
+	\item 
+	In class, we derived a three-point centered difference formula to approximate $f'(x)$. Using Taylor expansion, derive the following new difference formulas: $f'(x)\approx a_0 f(x) + a_{-1}f(x-h) + a_{-2}f(x-2h)$, which is known as three-point backward differentiation formula. What is the error term?
+\end{enumerate}
+
+\section*{Part 3. Computer Assignments}
+\begin{enumerate}
+	\item 
+	(Problem 6.6 @ Page 14)  The error function erf$(x)$ is defined by an integral:
+	\[
+	\text{erf}(x) = \frac{2}{\sqrt{\pi}} \dintt{0}{x}{e^{-x^2}}{x}
+	\]
+	Use \texttt{quadtx} to tabulate erf$(x)$ for $x = 0.1, 0.2, . . . , 1.0$. Compare the results with the built-in Matlab function \texttt{erf(x)}.
+	
+	\item 
+	(Problem 6.9 @ Page 15)
+	\begin{enumerate}
+		\item [(a)]
+		What is the exact value of
+		\[
+		\dintt{0}{4\pi}{\cos^2 x}{x}
+		\]
+		
+		\item [(b)]
+		What does \texttt{quadtx} compute for this integral? Why is it wrong?
+		
+		\item [(c)]
+		How does \texttt{quad} overcome the difficulty?
+	\end{enumerate}
+\end{enumerate}
+\end{document}
+
+
