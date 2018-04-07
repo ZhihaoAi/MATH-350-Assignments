@@ -75,6 +75,8 @@
 \newcolumntype{D}{ >{\centering\arraybackslash} m{4em} }
 \newcolumntype{N}{ >$ c <$}
 
+\DeclarePairedDelimiter\autoparen{(}{)}
+\newcommand{\pa}[1]{\autoparen*{#1}}
 \newcommand{\abs}[1] {\left| #1 \right|}
 \newcommand{\norm}[2][\infty] {\left\Vert \mathbf{#2} \right\Vert_#1}
 
@@ -89,10 +91,30 @@
 \begin{enumerate}
 	\item 
 	Consider finding an approximation to integral: $I = \dintt{0}{\pi/2}{\cos(x/2)}{x}$ using composite trapezoidal rule, $I = \dintt{a}{b}{f(x)}{x} = \frac{h}{2}[f(a) + 2\sum_{k=1}^{n-1}f(a+kh) + f(b) ] + error$, where $error = -\frac{b-a}{12}h^2 f''(\eta)$ for some $\eta\in [a,b]$. Suppose we wish to obtain an approximation with the absolute value of the error term less than $0.0001$, determine the number of subintervals $n$ correspondingly. (\textit{\textbf{hint}}: $\cos(\eta) \le 1$)
+	\begin{align*}
+		\abs{error} = \abs{-\frac{b-a}{12}h^2 \cos''(\eta)}
+		= \abs{-\frac{\pi/2}{12} \pa{\frac{\pi/2}{n}}^2 \pa{-\cos(\eta)}}
+		\le \frac{\pi^3}{96n^2}
+		\le 0.0001
+		\to
+		n \ge 57
+	\end{align*}
+	Therefore the number of subintervals should be at least 57.
 	
 	\item 
 	Redo problem 1 using composite Simpson’s rule $I = \dintt{a}{b}{f(x)}{x} = \frac{h}{3}[f(a) + 4\sum_{k=1, \text{odd}}^{n/2-1}f(a+kh) $
 	$ + 2\sum_{k=2, \text{even}}^{n/2}f(a+kh) + f(b) ] + error$ where $error = -\frac{b-a}{180}h^4f^{(4)}(\eta)$, for some $\eta\in [a,b]$. What can you learn from problem 1 and 2?
+	\begin{align*}
+	\abs{error} = \abs{-\frac{b-a}{180}h^4f^{(4)}(\eta)}
+	= \abs{-\frac{\pi/2}{180} \pa{\frac{\pi/2}{n}}^4 \cos(\eta)}
+	\le \frac{\pi^5}{5760n^4}
+	\le 0.0001
+	\to
+	n \ge 5
+	\end{align*}
+	Therefore the number of subintervals should be at least 5.
+	
+	\textit{Things learned:} Composite trapezoidal rule is of order 2 and composite Simpson's rule is of order 4 so the composite Simpson's rule converges to the real value faster. Therefore, to achieve the same level of accuracy, the number of subintervals needed for composite trapezoidal rule is much larger than that for composite Simpson's rule.
 	
 	\item 
 	Review your lecture notes and derive the 2-point Gaussian-Legendre formula, $\dintt{-1}{1}{f(x)}{x} \approx w_1 f(x_1) + w_2 f(x_2)$, i.e. you need to determine the weights $w_1$ and $w_2$ and the nodes $x_1$ and $x_2$ so that the above rule is exact for the functions $f(x)=1, f(x)=x, f(x)=x^2,$ and $f(x)=x^3$. Evaluate integral $i = \dintt{1}{4}{\frac{1}{x+2018}}{x}$ using the formula you derived. What is the exact value? (\textit{\textbf{hint}}: you have to map the\\[0.5 ex]
