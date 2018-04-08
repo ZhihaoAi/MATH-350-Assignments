@@ -172,6 +172,26 @@
 	\]
 	Use \texttt{quadtx} to tabulate erf$(x)$ for $x = 0.1, 0.2, . . . , 1.0$. Compare the results with the built-in Matlab function \texttt{erf(x)}.
 	
+	\lstinputlisting{hw6ca1.m}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{*{3}{N}} 
+			\toprule
+			x & \texttt{erf(x)} & erf(x) \text{ by } \texttt{quadtx} \\ \midrule
+			0.1 & 0.1124629160 & 0.1124629160\\
+			0.2 & 0.2227025892 & 0.2227025892\\
+			0.3 & 0.3286267595 & 0.3286267593\\
+			0.4 & 0.4283923550 & 0.4283923546\\
+			0.5 & 0.5204998778 & 0.5204998777\\
+			0.6 & 0.6038560908 & 0.6038560907\\
+			0.7 & 0.6778011938 & 0.6778012053\\
+			0.8 & 0.7421009647 & 0.7421009650\\
+			0.9 & 0.7969082124 & 0.7969082132\\
+			1.0 & 0.8427007929 & 0.8427007951\\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+	
 	\item 
 	(Problem 6.9 @ Page 15)
 	\begin{enumerate}
@@ -180,12 +200,18 @@
 		\[
 		\dintt{0}{4\pi}{\cos^2 x}{x}
 		\]
+		The exact value is $2\pi$, which is approximately 6.28319.
 		
 		\item [(b)]
 		What does \texttt{quadtx} compute for this integral? Why is it wrong?
 		
+		\texttt{quadtx} produces 12.566371. The first time it applys Simpson's rule, it chooses the points $(\pi, 1)$, $(2\pi, 1)$ and $(3\pi, 1)$, which produces 12.566371; when it applys Simpson's rule for the two subintervals, the points still have the same $y$-value 1. Because the difference between them is 0, it stops there and gives the wrong answer.
+		
 		\item [(c)]
 		How does \texttt{quad} overcome the difficulty?
+		
+		\texttt{quad} uses the extrapolated Simpson’s rule in an adaptive recursive algorithm whereas \texttt{quadtx} evaluates the integrand three times to
+		give the first, unextrapolated, Simpson’s rule estimate.
 	\end{enumerate}
 \end{enumerate}
 \end{document}
