@@ -117,11 +117,50 @@
 	\textit{Things learned:} Composite trapezoidal rule is of order 2 and composite Simpson's rule is of order 4 so the composite Simpson's rule converges to the real value faster. Therefore, to achieve the same level of accuracy, the number of subintervals needed for composite trapezoidal rule is much larger than that for composite Simpson's rule.
 	
 	\item 
-	Review your lecture notes and derive the 2-point Gaussian-Legendre formula, $\dintt{-1}{1}{f(x)}{x} \approx w_1 f(x_1) + w_2 f(x_2)$, i.e. you need to determine the weights $w_1$ and $w_2$ and the nodes $x_1$ and $x_2$ so that the above rule is exact for the functions $f(x)=1, f(x)=x, f(x)=x^2,$ and $f(x)=x^3$. Evaluate integral $i = \dintt{1}{4}{\frac{1}{x+2018}}{x}$ using the formula you derived. What is the exact value? (\textit{\textbf{hint}}: you have to map the\\[0.5 ex]
+	Review your lecture notes and derive the 2-point Gaussian-Legendre formula, $\dintt{-1}{1}{f(x)}{x} \approx w_1 f(x_1) + w_2 f(x_2)$, i.e. you need to determine the weights $w_1$ and $w_2$ and the nodes $x_1$ and $x_2$ so that the above rule is exact for the functions $f(x)=1, f(x)=x, f(x)=x^2,$ and $f(x)=x^3$. Evaluate integral $I = \dintt{1}{4}{\frac{1}{x+2018}}{x}$ using the formula you derived. What is the exact value? (\textit{\textbf{hint}}: you have to map the\\[0.5 ex]
 	interval $[1, 4]$ to $[-1,1]$ following your lecture notes.)
+	\[
+	\begin{dcases}
+	2 = \dintt{-1}{1}{1}{x} = w_1\cdot 1 + w_2\cdot 1\\
+	0 = \dintt{-1}{1}{x}{x} = w_1\cdot x_1 + w_2\cdot x_2\\
+	\frac{2}{3} = \dintt{-1}{1}{x^2}{x} = w_1\cdot x_1^2 + w_2\cdot x_2^2\\
+	0 = \dintt{-1}{1}{x^3}{x} = w_1\cdot x_1^3 + w_2\cdot x_2^3
+	\end{dcases}
+	\Rightarrow
+	\begin{dcases}
+	w_1 = 1\\
+	w_2 = 1\\
+	x_1 = -\frac{1}{\sqrt{3}}\\
+	x_2 = \frac{1}{\sqrt{3}}\\
+	\end{dcases}
+	\]
+	$\dintt{1}{4}{\frac{1}{x+2018}}{x} = \ln(\frac{674}{673}) \approx 0.00148478$. To use the 2-point Gaussian-Legendre formula, let $x = \frac{3}{2}t+\frac{5}{2}, dx = \frac{3}{2}dt, t\in [-1, 1]$. Then 
+	\begin{align*}
+	\dintt{1}{4}{\frac{1}{x+2018}}{x} 
+	&= \dintt{-1}{1}{f\left(\frac{3}{2}t+\frac{5}{2}\right)\cdot\frac{3}{2}}{t} \\
+	&\approx \frac{3}{2} \left[
+	f\left(\frac{3}{2} \pa{-\frac{1}{\sqrt{3}}} + \frac{5}{2}\right) 
+	+ f\left(\frac{3}{2} \pa{\frac{1}{\sqrt{3}}} + \frac{5}{2}\right) 
+	\right]\\
+	&\approx 0.00148478
+	\end{align*}
 	
 	\item 
 	In class, we derived a three-point centered difference formula to approximate $f'(x)$. Using Taylor expansion, derive the following new difference formulas: $f'(x)\approx a_0 f(x) + a_{-1}f(x-h) + a_{-2}f(x-2h)$, which is known as three-point backward differentiation formula. What is the error term?
+	
+	Apply Taylor expansion on the RHS,
+	\begin{align*}
+		&\phantom{\ =\ } a_0 f(x) + a_{-1}f(x-h) + a_{-2}f(x-2h)\\
+		&= a_0 f(x) + a_{-1} \pa{f(x) - hf'(x) + \frac{h^2}{2} f''(x) + O(h^3)} + a_{-2} \pa{f(x) - 2hf'(x) + 2h^2 f''(x) + O(h^3)}\\
+		&= (a_0 + a_1 + a_2)f(x) - h(a_{-1} + 2a_{-2})f'(x) + h^2\pa{\frac{a_{-1}}{2} + 2a_{-2}} + O(h^3)\\
+		&= f'(x)
+	\end{align*}
+	Solving the equations, we have $a_0 = \frac{3}{2h}, a_{-1} = -\frac{2}{h}, a_{-2} = \frac{1}{2h}$. Therefore, the formula is
+	\[
+	f'(x) = \frac{1}{h}\pa{\frac{3}{2} f(x) - 2f(x-h) + \frac{1}{2}f(x-2h)}
+	\]
+	The error term is $O(h^3)$, or more exactly, $-h^3\pa{\frac{1}{6}f'''(\xi_1) + \frac{4}{3}f'''(\xi_2)}$.
+	
 \end{enumerate}
 
 \section*{Part 3. Computer Assignments}
