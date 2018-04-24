@@ -1,0 +1,162 @@
+\documentclass[10pt]{report}
+
+\usepackage{verbatim}
+\usepackage{subcaption} % for subfigures
+%\usepackage{amsthm} % for QED
+%\usepackage{algpseudocode} % for pseudo-code
+\usepackage{mathtools} % for \xRightarrow
+
+\usepackage{listings} % for code
+\lstset
+{
+	language=Matlab,
+	frame=single,
+	basicstyle=\footnotesize,
+	numbers=left,
+	stepnumber=1,
+	showstringspaces=false,
+	tabsize=4,
+	breaklines=true,
+	breakatwhitespace=false,
+}
+
+\usepackage{siunitx} % for scientific notation
+% for `e' in scientific notation
+\sisetup{output-exponent-marker=\ensuremath{\mathrm{e}}}
+
+\usepackage{float} % for figure [H]
+\usepackage{booktabs} % for tabular
+\usepackage{caption} % for \caption*
+\usepackage[export]{adjustbox} % for valign=t
+\usepackage{array} % for column type m
+\usepackage{verbatim}
+\usepackage{graphicx}
+\graphicspath{ {imgs/} }
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+%%%%%% Pagination
+\setlength{\topmargin}{-.3 in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9.in}
+\setlength{\textwidth}{6.5in}
+
+%Title page
+\newcommand{\hwTitle}{Homework \#7}
+\newcommand{\hwCourse}{Introduction to Computational Mathematics}
+\newcommand{\hmwkClassInstructor}{Professor Shuwang Li}
+
+\title{
+	\vspace{2in}
+	\textmd{\textbf{\hwCourse\\\hwTitle}}\\
+	\vspace{0.3in}\large{\textit{\hmwkClassInstructor}}
+	\vspace{3in}
+}
+
+%\title{Homework 1}
+\author{\textbf{Zhihao Ai}}
+\date{}
+
+%Header setting.
+\pagestyle{fancy}
+\fancyhead[L]{Zhihao Ai}
+\fancyhead[C]{Math 350}
+\fancyhead[R]{Homework 7}
+%%%%%%
+
+%Custom commands.
+\newcommand{\ds}{\displaystyle}
+\newcommand{\eva}[2] {\left. #1 \right|_{#2}}
+\newcommand{\dintt}[4] {\int_{#1}^{#2} #3 d#4}
+
+\newcolumntype{C}{ >{\centering\arraybackslash} m{3em} }
+\newcolumntype{D}{ >{\centering\arraybackslash} m{4em} }
+\newcolumntype{N}{ >$ c <$}
+
+\DeclarePairedDelimiter\autoparen{(}{)}
+\newcommand{\pa}[1]{\autoparen*{#1}}
+\newcommand{\abs}[1] {\left| #1 \right|}
+\newcommand{\norm}[2][\infty] {\left\Vert \mathbf{#2} \right\Vert_#1}
+
+\begin{document}
+
+\maketitle
+
+\section*{Part 1. Reading Assignment}
+%Read chapter 7.
+
+\section*{Part 2. Fundamental Concepts/Ideas}
+\begin{enumerate}
+	\item 
+	In class, we derived the centered difference formula using Taylor expansions for
+	\begin{align*}
+		f(x+h) &= f(x) + hf'(x) + \frac{h^2}{2}f''(x) + \frac{h^3}{6}f'''(\xi_1)\\
+		f(x-h) &= f(x) - hf'(x) + \frac{h^2}{2}f''(x) - \frac{h^3}{6}f'''(\xi_1)
+	\end{align*}
+	\begin{enumerate}
+		\item 
+		Show that $f''(x) \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$.
+		
+		\item
+		Consider the quadratic interpolant $p(x)$ passing through three points, $(x_1, f(x_1))$, $(x_2, f(x_2))$, and $(x_3, f(x_3))$. In class, we derived the centered
+		difference formula based on an approximation $f'(x) \approx p'(x)$. Show that the difference formula you derived in part (a) can be obtained using approximation $f''(x) \approx p''(x)$, with $x_1 = x - h$, $x_2 = x$, and $x_3 = x + h$.
+	\end{enumerate}
+
+	\item 
+	Convert the following higher order IVPs into first order systems
+	\begin{enumerate}
+		\item 
+		$\ds m\frac{d^2y}{dt^2} + \gamma \frac{dy}{dt} + \frac{mg}{l} \sin(y) = A\sin(\Omega t)$ with $y(0) = \theta_0$, $y'(0) = \omega_0$.
+		
+		\item
+		$\ds \frac{d^3y}{dt^3} + \pa{\frac{d^2y}{dt^2}}^2 - 3\pa{\frac{dy}{dt}}^3 + \cos^2(y) = e^{-t}\sin(3t)$, with $y(1) = 1, y'(1) = 2, y''(1) = 0$.
+	\end{enumerate}
+\end{enumerate}
+
+\section*{Part 3. Computer Assignments}
+\begin{enumerate}
+	\item 
+	(Problem 7.4 @ Page 35) The error function erf($x$) is usually defined by an integral,
+	\[
+	\text{erf}(x) = \frac{2}{\sqrt{\pi}} \dintt{0}{x}{e^{-x^2}}{x},
+	\]
+	but it can also be defined as the solution to the differential equation
+	\begin{align*}
+		y'(x) &= \frac{2}{\sqrt{\pi}}e^{-x^2},\\
+		y(0) &= 0.
+	\end{align*}
+	Use \texttt{ode23tx} to solve this differential equation on the interval $0 \le x \le 2$. Compare the results with the built-in Matlab function \texttt{erf(x)} at the points chosen by \texttt{ode23tx}.
+	
+	\item 
+	Consider the following IVP,
+	\[
+	\frac{dy}{dt} = -2y^2 + \frac{1}{1+t^2},\quad \text{with } y(0) = 0,
+	\]
+	\begin{enumerate}
+		\item 
+		Show that the exact solution is $y(t) = \frac{t}{1+t^2}$.
+		
+		\item 
+		Solve this IVP numerically for $0 \le t \le 0.3$ and calculate the numerical errors at time $t=0.1, 0.2$ and $0.3$
+		\begin{enumerate}
+			\item 
+			using explicit Euler’s method with $h=0.025$.
+			
+			\item 
+			using classical $2^{\text{nd}}$ order Runge-Kutta method with $h=0.05$.
+			
+			\item 
+			using $4^{\text{th}}$ order Runge-Kutta method with $h=0.1$.
+		\end{enumerate}
+	\end{enumerate}
+	
+	\item 
+	Redo problem the above problem 2 using a two-step Adams-Bashforth method
+	$0 \le t \le 0.3$. You can use the explicit Euler's method to generate the necessary initial values, $let h=0.025$.
+\end{enumerate}
+
+\end{document}
+
+
