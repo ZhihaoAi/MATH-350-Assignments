@@ -93,25 +93,67 @@
 	In class, we derived the centered difference formula using Taylor expansions for
 	\begin{align*}
 		f(x+h) &= f(x) + hf'(x) + \frac{h^2}{2}f''(x) + \frac{h^3}{6}f'''(\xi_1)\\
-		f(x-h) &= f(x) - hf'(x) + \frac{h^2}{2}f''(x) - \frac{h^3}{6}f'''(\xi_1)
+		f(x-h) &= f(x) - hf'(x) + \frac{h^2}{2}f''(x) - \frac{h^3}{6}f'''(\xi_2)
 	\end{align*}
 	\begin{enumerate}
 		\item 
-		Show that $f''(x) \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$.
+		Show that $\ds f''(x) \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$.
+		
+		Add the equations together and rearrange them, we have
+		\begin{align*}
+			f(x+h) + f(x-h) &= 2f(x) + h^2 f''(x) + \frac{h^3}{6}f'''(\xi_1) - \frac{h^3}{6}f'''(\xi_2)\\
+			h^2 f''(x) &= f(x+h) - 2f(x) + f(x-h) +\frac{h^3}{6}f'''(\xi_2) - \frac{h^3}{6}f'''(\xi_1)\\
+			f''(x) &\approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}
+		\end{align*}
 		
 		\item
 		Consider the quadratic interpolant $p(x)$ passing through three points, $(x_1, f(x_1))$, $(x_2, f(x_2))$, and $(x_3, f(x_3))$. In class, we derived the centered
 		difference formula based on an approximation $f'(x) \approx p'(x)$. Show that the difference formula you derived in part (a) can be obtained using approximation $f''(x) \approx p''(x)$, with $x_1 = x - h$, $x_2 = x$, and $x_3 = x + h$.
+		\begin{align*}
+			p(x) &= \frac{(x-x_2)(x-x_3)}{(x_1 - x_2)(x_1 - x_3)}f(x_1) 
+			+ \frac{(x-x_1)(x-x_3)}{(x_2 - x_1)(x_2 - x_3)}f(x_2)
+			+ \frac{(x-x_1)(x-x_2)}{(x_3 - x_1)(x_3 - x_2)}f(x_3)\\
+			p''(x) &= \frac{1}{h^2} f(x_1) - \frac{2}{h^2} f(x_2) + \frac{1}{h^2} f(x_3)\\
+			p''(x) &= \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}
+ 		\end{align*}
+		Therefore, $f''(x) \approx p''(x)$.
+		
 	\end{enumerate}
 
 	\item 
-	Convert the following higher order IVPs into first order systems
+	Convert the following higher order IVPs into first order systems.
 	\begin{enumerate}
 		\item 
 		$\ds m\frac{d^2y}{dt^2} + \gamma \frac{dy}{dt} + \frac{mg}{l} \sin(y) = A\sin(\Omega t)$ with $y(0) = \theta_0$, $y'(0) = \omega_0$.
 		
+		Let $u_1(t) = y(t), u_2(t) = y'(t)$, then we have
+		\[
+		\left\{
+		\begin{aligned}
+			u_1'(t) &= u_2(t)\\
+			u_2'(t) &= -\frac{\gamma}{m} u_2(t) - \frac{g}{l}\sin(u_1(t)) + \frac{A}{m}\sin(\omega t)\\
+			u_1(0) &= \theta_0\\
+			u_2(0) &= \omega_0
+		\end{aligned}
+		\right.
+		\]
+		
 		\item
 		$\ds \frac{d^3y}{dt^3} + \pa{\frac{d^2y}{dt^2}}^2 - 3\pa{\frac{dy}{dt}}^3 + \cos^2(y) = e^{-t}\sin(3t)$, with $y(1) = 1, y'(1) = 2, y''(1) = 0$.
+		
+		Let $u_1(t) = y(t), u_2(t) = y'(t), u_3(t) = y''(t)$, then we have
+		\[
+		\left\{
+		\begin{aligned}
+		u_1'(t) &= u_2(t)\\
+		u_2'(t) &= u_3(t)\\
+		u_3'(t) &= -u_3^2(t) + 3u_2^2(t) - \cos^2(u_1(t)) + e^{-t}\sin(3t)\\
+		u_1(1) &= 1\\
+		u_2(1) &= 2\\
+		u_3(1) &= 0\\
+		\end{aligned}
+		\right.
+		\]
 	\end{enumerate}
 \end{enumerate}
 
@@ -129,6 +171,9 @@
 	\end{align*}
 	Use \texttt{ode23tx} to solve this differential equation on the interval $0 \le x \le 2$. Compare the results with the built-in Matlab function \texttt{erf(x)} at the points chosen by \texttt{ode23tx}.
 	
+	\lstinputlisting{hw7ca1.m}
+	Using \texttt{ode23tx}, $\text{erf}(2) \approx 0.995271$. It is close to what \texttt{erf(2)} outputs, which is $0.995322$.
+	
 	\item 
 	Consider the following IVP,
 	\[
@@ -137,6 +182,9 @@
 	\begin{enumerate}
 		\item 
 		Show that the exact solution is $y(t) = \frac{t}{1+t^2}$.
+		\[
+		-2y^2 + \frac{1}{1+t^2} = -2\cdot\frac{t^2}{(1+t^2)^2} + \frac{1}{1+t^2} = \frac{1 - t^2}{(1+t^2)^2} = \frac{dy}{dt}
+		\]
 		
 		\item 
 		Solve this IVP numerically for $0 \le t \le 0.3$ and calculate the numerical errors at time $t=0.1, 0.2$ and $0.3$
@@ -150,11 +198,27 @@
 			\item 
 			using $4^{\text{th}}$ order Runge-Kutta method with $h=0.1$.
 		\end{enumerate}
+	
+		\lstinputlisting{hw7ca2.m}
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{*{4}{N}} 
+				\toprule
+				 & \text{Explicit Euler} & \text{ERK2} & \text{ERK4} \\ \midrule
+				y(0.3) & 0.277879 & 0.274868 & 0.275228 \\
+				\epsilon_{0.1} & 0.000337 & 0.000126 & 0.000000 \\
+				\epsilon_{0.2} & 0.001310 & 0.000249 & 0.000001 \\
+				\epsilon_{0.3} & 0.002650 & 0.000361 & 0.000002 \\
+				\bottomrule
+			\end{tabular}
+		\end{table}
 	\end{enumerate}
 	
 	\item 
-	Redo problem the above problem 2 using a two-step Adams-Bashforth method
-	$0 \le t \le 0.3$. You can use the explicit Euler's method to generate the necessary initial values, $let h=0.025$.
+	Redo the above problem 2 using a two-step Adams-Bashforth method
+	$0 \le t \le 0.3$. You can use the explicit Euler's method to generate the necessary initial values, let $h=0.025$.
+	\lstinputlisting{hw7ca3.m}
+	AB2 produces $y(0.3)\approx 0.275533$. $\epsilon_{0.1} = 0.000128, \epsilon_{0.2} = 0.000246, \epsilon_{0.3} = 0.000303$.
 \end{enumerate}
 
 \end{document}
